@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SKNManager.Controllers
 {
+    [Authorize]
     public class MemberController : Controller
     {
         // GET: Member
@@ -21,8 +23,8 @@ namespace SKNManager.Controllers
             return View();
         }
 
-        // GET: Member/Create
-        public ActionResult Create()
+        // GET: Member/Add
+        public ActionResult Add()
         {
             return View();
         }

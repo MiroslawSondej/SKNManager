@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Zarządzanie członkami";
+}
+
+<div class="container">
+    <h2>Członkowie koła</h2>
+    <hr />
+    <a href='@Url.Action("Add", "Member")'>Dodaj nowego członka</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Imię i nazwisko</td>
+                <td>Rola</td>
+                <td>Zarządzanie</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Jan Kowalski
+                </td>
+                <td>
+                    Prezes
+                </td>
+                <td>
+                    <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
+                    <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
+                    <a href='@Url.Action("Delete", "Member")'>Usuń</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Jan Kowalski
+                </td>
+                <td>
+                    Prezes
+                </td>
+                <td>
+                    <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
+                    <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
+                    <a href='@Url.Action("Delete", "Member")'>Usuń</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

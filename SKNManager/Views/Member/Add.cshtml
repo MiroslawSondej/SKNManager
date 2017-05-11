@@ -1,0 +1,31 @@
+﻿@model AddMemberViewModel
+@{
+    ViewData["Title"] = "Dodaj członka";
+}
+
+<div class="container">
+    <h2>Dodaj członka</h2>
+    <hr />
+
+    <div class="col-md-6">
+        <h4>Dodaj istniejącego użytkownika</h4>
+        <form asp-controller="Member" asp-action="Add" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label asp-for="Name" class="col-md-3 control-label"></label>
+                <div class="col-md-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-default">Dodaj</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Zaproś nowego użytkownika</h4>
+    </div>
+
+</div>
+

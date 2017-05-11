@@ -68,3 +68,41 @@ footer {
     height: 60px;
     border-top: 1px solid #eee;
 }
+
+/* --------------- */
+
+.col-border-left {
+    border-left: 1px solid #eee;
+}
+
+.col-border-right {
+    border-right: 1px solid #eee;
+}
+
+.col-border-top {
+    border-top: 1px solid #eee;
+}
+
+.col-border-bottom {
+    border-bottom: 1px solid #eee;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.no-margin-top {
+    margin-top: 0px;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0px;
+}
+
+.no-margin-left {
+    margin-left: 0px;
+}
+
+.no-margin-right {
+    margin-right: 0px;
+}
