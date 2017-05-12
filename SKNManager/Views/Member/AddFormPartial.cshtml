@@ -1,0 +1,15 @@
+﻿@using System.Collections.Generic
+@model AddMemberViewModel
+
+<form asp-controller="Member" asp-action="Add" asp-route-returnurl="@Url.Action("Index", "Member")" method="post" class="form-horizontal">
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-3 control-label"></label>
+        <div class="col-md-4">
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-default">Dodaj</button>
+        </div>
+    </div>
+</form>
