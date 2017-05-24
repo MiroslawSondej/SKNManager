@@ -3,13 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SKNManager PWSZ Krosno</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/navmenu.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,69 +16,82 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="~/css/site.css">
+
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <div class="page-header">
-        <div class="page-header-logo-text">
-            SKNManager - PWSZ Krosno
-        </div>
-    </div>
-    <div id="wrapper" class="">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Strona główna
-                    </a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">Shortcuts</a>
-                </li>
-                <li>
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        @RenderBody()
+    <!-- Top navbar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mobile-menu" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">SKNManager</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <div class="nav navbar-nav navbar-right">
+                    <div class="list-inline">
+                        <a class="list-inline-item" href="#">
+                            <img class="img-fluid user-nav-icon" src="images/icons/notification-icon.png" />
+                        </a>
+                        <a class="list-inline-item" href="#">
+                            <img class="img-fluid user-nav-icon" src="images/icons/message-icon.png" />
+                        </a>
+                        <a class="list-inline-item user-menu" href="#">
+                            <img class="img-fluid" src="images/icons/user-icon.png" />
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div>
-            <footer>
-                <p>&copy; 2017 - SKNManager</p>
-            </footer>
+        <div id="mobile-menu" class="collapse">
+            <div id="menu-section" class="list-group">
+                @Html.Partial("_SharedMenuPartial")
+                <div class="mobile-menu-separator"></div>
+                <a class="list-group-item" href="">Profil użytkownika</a>
+                <a class="list-group-item" href="">Wiadomości</a>
+                <a class="list-group-item" href="">Powiadomienia</a>
+            </div>
         </div>
-        <!-- /#page-content-wrapper -->
+    </nav>
+    <!-- ========== -->
+    <!-- Page container -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar navigation -->
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div id="menu-section" class="list-group">
+                    @Html.Partial("_SharedMenuPartial")
+                </div>
+            </div>
+            <!-- ================== -->
+            <!-- Page content -->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
 
+            </div>
+            <!-- ============ -->
+        </div>
     </div>
-
-
-
+    <!-- ============== -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="col-sm-12 col-md-12">
+                <p class="footer-line">&copy; 2017 - SKNManager by SKN NEO</p>
+            </div>
+        </div>
+    </footer>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

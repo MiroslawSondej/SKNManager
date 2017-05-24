@@ -3,13 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SKNManager PWSZ Krosno</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/navmenu.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -17,17 +16,36 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="~/css/site.css">
+
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <div class="page-header">
-        <div class="page-header-logo-text">
-            SKNManager - PWSZ Krosno
+    <!-- Top header -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="">SKNManager</a>
+            </div>
         </div>
-    </div>
-    <div class="container">
+    </nav>
+    <!-- ========== -->
+    <!-- Page container -->
+    <div class="container-fluid">
         @RenderBody()
     </div>
+    <!-- ============== -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="col-sm-12 col-md-12">
+                <p class="footer-line">&copy; 2017 - SKNManager by SKN NEO</p>
+            </div>
+        </div>
+    </footer>
+
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -51,5 +69,7 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+
+
 
 </html>

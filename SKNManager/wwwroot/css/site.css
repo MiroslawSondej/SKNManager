@@ -1,108 +1,167 @@
-﻿body {
-    padding-top: 0px;
-    padding-bottom: 20px;
+﻿/* ===[GENERAL]=== */
+html {
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 60px; /* IMPORTANT: Footer height + 10px */
 }
-
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+body {
+    background-color: #f3f3f3;
+    font-family: 'Open Sans', serif;
 }
-
-/* Set widths on the form inputs since otherwise they're 100% wide */
-input,
-select,
-textarea {
-    max-width: 280px;
+/* ============== */
+input, select, textarea {
+    /*max-width: 280px;  Set widths on the form inputs since otherwise they're 100% wide */
 }
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+ul, li {
+    list-style-position: inside;
 }
-
-/* buttons and links extension to use brackets: [ click me ] */
-.btn-bracketed::before {
-    display: inline-block;
-    content: "[";
-    padding-right: 0.5em;
-}
-
-.btn-bracketed::after {
-    display: inline-block;
-    content: "]";
-    padding-left: 0.5em;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
+/* ===[NAVBAR]=== */
+@media (min-width: 768px) {
+    #mobile-menu {
         display: none;
     }
 }
-
-.page-header {
-    margin-top: 0px;
-    padding-top: 20px;
-    margin-bottom: 0px;
+.mobile-menu-separator {
+    padding: 10px;
 }
-
-.page-header-logo-text {
-    font-size: 22px;
+.navbar {
+    background-color: #ffffff;
+    border: 0px;
+    border-radius: 0;
+}
+.navbar-nav {
+    padding-top: 10px;
+}
+.navbar-nav .list-inline-item {
+    margin-right: 10px;
+}
+.navbar-nav .img-fluid {
+    height: 32px;
+}
+.navbar-nav .img-fluid.user-nav-icon {
+    height: 16px;
+    margin-top: 2px;
+}
+.navbar-nav .user-menu {
+    margin-left: 25px;
+}
+/* ===[SIDEBAR]=== */
+.sidebar {
+    display: none; /* Sidebar hidden on mobile devices */
+    color: #f3f3f3;
+}
+@media (min-width: 768px) {
+    .sidebar {
+        position: absolute;
+        top: 50px; /* IMPORTANT: top navbar height [+ borders] */
+        bottom: 50px; /* IMPORTANT: footer height */
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: #2b3643;
+    }
+}
+.sidebar .list-group {
+    padding-top: 10px;
+}
+.sidebar .list-group .list-group-item {
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #55595c;
+    color: #f3f3f3;
+}
+.sidebar .list-group .list-group-item:last-of-type {
+    border: 0;
+}
+.sidebar .list-group .active {
+    background: #0084ff;
     font-weight: bold;
-    color: #999;
-    margin-left: 20px;
 }
-
-footer {
+.sidebar .list-group .list-group-item:hover {
+    background: #959595;
+    font-weight: bold;
+}
+/* ===[MAIN CONTENT]===*/
+.content-window {
+    background-color: #ffffff;
+    border-bottom: 2px solid #73738b;
+    margin-bottom: 10px;
+}
+.content-window .page-header {
+    margin-top: 10px;
+}
+/* ===[FOOTER]=== */
+.footer {
+    position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
-    border-top: 1px solid #eee;
+    height: 50px;
+    background-color: #2b3643;
+    color: #f3f3f3;
+    padding-top: 15px;
 }
-
-/* --------------- */
-
-.col-border-left {
-    border-left: 1px solid #eee;
+.footer-line {
+    margin: 0;
+    text-align: center;
 }
-
-.col-border-right {
-    border-right: 1px solid #eee;
+/* ===[CUSTOMIZATION]=== */
+/* [Buttons] */
+.btn {
+    border-radius: 0;
+    border: 0;
+    background-color: #0084ff;
+    color: #f3f3f3;
+    font-weight: 600;
 }
-
-.col-border-top {
-    border-top: 1px solid #eee;
+.btn:hover {
+    background-color: #959595;
 }
-
-.col-border-bottom {
-    border-bottom: 1px solid #eee;
+/* [Forms] */
+.form-control {
+    background: #f3f3f3;
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+    border-radius: 0px;
+    box-shadow: initial;
+    margin-bottom: 5px;
 }
-
-.no-margin {
-    margin: 0px;
+.form-control:focus {
+    box-shadow: initial;
+    -webkit-box-shadow: inset 0px -1px 1px 0px rgba(0,132,255,0.5);
+    -moz-box-shadow: inset 0px -1px 1px 0px rgba(0,132,255,0.5);
+    box-shadow: inset 0px -1px 1px 0px rgba(0,132,255,0.5);
 }
-
-.no-margin-top {
-    margin-top: 0px;
+.has-success .form-control {
+    box-shadow: initial;
 }
-
-.no-margin-bottom {
-    margin-bottom: 0px;
+.has-success .form-control:focus {
+    box-shadow: initial;
+    border-radius: 0;
+    -webkit-box-shadow: inset 0px -2px 1px 0px rgba(166,255,0,0.5);
+    -moz-box-shadow: inset 0px -2px 1px 0px rgba(166,255,0,0.5);
+    box-shadow: inset 0px -2px 1px 0px rgba(166,255,0,0.5);
 }
-
-.no-margin-left {
-    margin-left: 0px;
+.has-warning .form-control {
+    box-shadow: initial;
 }
-
-.no-margin-right {
-    margin-right: 0px;
+.has-warning .form-control:focus {
+    -webkit-box-shadow: inset 0px -2px 1px 0px rgba(255,221,0,0.5);
+    -moz-box-shadow: inset 0px -2px 1px 0px rgba(255,221,0,0.5);
+    box-shadow: inset 0px -2px 1px 0px rgba(255,221,0,0.5);
+}
+.has-error .form-control {
+    box-shadow: initial;
+}
+.has-error .form-control:focus {
+    -webkit-box-shadow: inset 0px -2px 1px 0px rgba(230,0,0,0.5);
+    -moz-box-shadow: inset 0px -2px 1px 0px rgba(230,0,0,0.5);
+    box-shadow: inset 0px -2px 1px 0px rgba(230,0,0,0.5);
+}
+.checkbox {
+    padding-top: 0 !important;
 }

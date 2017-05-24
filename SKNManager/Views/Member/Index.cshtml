@@ -2,46 +2,48 @@
     ViewData["Title"] = "Zarządzanie członkami";
 }
 
-<div class="container">
-    <h2>Członkowie koła</h2>
-    <hr />
-    <a href='@Url.Action("Add", "Member")'>Dodaj nowego członka</a>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>Imię i nazwisko</td>
-                <td>Rola</td>
-                <td>Zarządzanie</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    Jan Kowalski
-                </td>
-                <td>
-                    Prezes
-                </td>
-                <td>
-                    <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
-                    <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
-                    <a href='@Url.Action("Delete", "Member")'>Usuń</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Jan Kowalski
-                </td>
-                <td>
-                    Prezes
-                </td>
-                <td>
-                    <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
-                    <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
-                    <a href='@Url.Action("Delete", "Member")'>Usuń</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <button class="btn btn-block" href='@Url.Action("Add", "Member")'>Dodaj nowego członka</button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Imię i nazwisko</td>
+                        <td>Rola</td>
+                        <td>Zarządzanie</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Jan Kowalski
+                        </td>
+                        <td>
+                            Prezes
+                        </td>
+                        <td>
+                            <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
+                            <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
+                            <a href='@Url.Action("Delete", "Member")'>Usuń</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Jan Kowalski
+                        </td>
+                        <td>
+                            Prezes
+                        </td>
+                        <td>
+                            <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
+                            <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
+                            <a href='@Url.Action("Delete", "Member")'>Usuń</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
