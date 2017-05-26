@@ -10,11 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using Pomelo.EntityFrameworkCore.Extensions;
-
 using SKNManager.Data;
 using SKNManager.Models;
 using SKNManager.Services;
+using SKNManager.Utils.Identity;
 
 namespace SKNManager
 {
@@ -50,7 +49,7 @@ namespace SKNManager
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders().AddErrorDescriber<CustomIdentityErrorDescriber>();
 
             services.AddMvc();
 

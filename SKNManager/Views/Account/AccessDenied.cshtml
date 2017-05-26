@@ -1,5 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Odmowa dostępu";
+    if (!User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_LoginPageLayout.cshtml";
+    }
 }
 
 <div class="row">

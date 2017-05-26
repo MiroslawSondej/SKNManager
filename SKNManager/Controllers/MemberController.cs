@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+using SKNManager.Models.AccountViewModels;
 
 namespace SKNManager.Controllers
 {
@@ -20,6 +21,9 @@ namespace SKNManager.Controllers
         {
             return View();
         }
+
+
+
 
         // GET: Member/Details/5
         public ActionResult Details(int id)

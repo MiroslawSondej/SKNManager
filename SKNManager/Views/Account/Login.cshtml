@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Logowanie";
-    Layout = "_LoginPageLayout.cshtml";
+    Layout = "~/Views/Shared/_LoginPageLayout.cshtml";
 }
 
 <div class="row">
@@ -15,6 +15,7 @@
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
             <section>
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+
                     <div class="col-md-12">
                         <div asp-validation-summary="All" class="text-danger"></div>
                     </div>

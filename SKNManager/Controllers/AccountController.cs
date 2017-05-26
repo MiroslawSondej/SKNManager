@@ -9,9 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Net;
 using SKNManager.Models;
 using SKNManager.Models.AccountViewModels;
 using SKNManager.Services;
+using SKNManager.Data;
+using Microsoft.AspNetCore.Builder;
 
 namespace SKNManager.Controllers
 {
@@ -24,14 +27,18 @@ namespace SKNManager.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly EmailTokenProvider<ApplicationUser> _tokenProvider;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
+            EmailTokenProvider<ApplicationUser> tokenProvider,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,6 +46,8 @@ namespace SKNManager.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _dbContext = dbContext;
+            _tokenProvider = tokenProvider;
         }
 
         //
@@ -93,47 +102,6 @@ namespace SKNManager.Controllers
         }
 
         //
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -144,24 +112,7 @@ namespace SKNManager.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        // GET: /Account/ConfirmEmail
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return View("Error");
-            }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
-
+        
         //
         // GET: /Account/ForgotPassword
         [HttpGet]
@@ -269,6 +220,12 @@ namespace SKNManager.Controllers
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
+        [AllowAnonymous]
+        public string Test()
+        {
+            return _tokenProvider.ToString();
+        }
+
         //
         // POST: /Account/SendCode
         [HttpPost]
@@ -352,6 +309,121 @@ namespace SKNManager.Controllers
                 ModelState.AddModelError(string.Empty, "Kod nieprawidłowy.");
                 return View(model);
             }
+        }
+
+        //
+        // POST /Account/Invite
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Invite(InviteViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    // Send an email with this link
+                    var codeKey = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(nameof(Register), "Account", new { userId = user.Id, code = codeKey }, protocol: HttpContext.Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(model.Email, "Zaproszenie do systemu SKNManager | PWSZ Krosno",
+                        $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToLocal(returnUrl);
+
+            //_dbContext.Users.Where(u => u.Id == userId);
+            //_dbContext.Users.Add(newUser);
+            //_dbContext.SaveChanges();
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            if(user.EmailConfirmed)
+            {
+                ViewData["ErrorID"] = "UserAlreadyActivated";
+                return View("RegistrationFailed");
+            }
+
+            return View(new RegisterViewModel { Email = user.Email, UserId = userId, Code = code });
+        }
+
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (model.UserId == null || model.Code == null)
+                {
+                    return View("Error");
+                }
+
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if(user == null)
+                {
+                    return View("Error");
+                }
+
+                if (user.EmailConfirmed)
+                {
+                    ViewData["ErrorID"] = "UserAlreadyActivated";
+                    return View("RegistrationFailed");
+                }
+
+                bool tokenVerificationResult = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "EmailConfirmation", model.Code);
+                if(!tokenVerificationResult)
+                {
+                    ViewData["ErrorID"] = "IncorrectToken";
+                    return View("RegistrationFailed");
+                }
+
+                var result = await _userManager.AddPasswordAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //result = await _userManager.ConfirmEmailAsync(user, model.Code);
+                    user.EmailConfirmed = true;
+                    _dbContext.Users.Update(user);
+                    _dbContext.SaveChanges();
+                    _logger.LogInformation(3, "User created and activated.");
+                    return View("RegistrationCompleted");
+                }
+                else if(result.Errors.Where((e) => e.Code == "UserAlreadyHasPassword").Any())
+                {
+                    ViewData["ErrorID"] = "UserAlreadyActivated";
+                    return View("RegistrationFailed");
+                }
+                AddErrors(result);
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         //

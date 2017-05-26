@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_LoginPageLayout.cshtml";
+    ViewData["Title"] = "Błąd procesu rejestracji";
+
+    if(!ViewData.ContainsKey("ErrorID"))
+    {
+        ViewData["ErrorID"] = "Unknown";
+    }
+    switch (ViewData["ErrorID"].ToString())
+    {
+        case "UserAlreadyActivated":
+            ViewData["Message"] = "Rejestracja nie powiodła się. Wygląda na to, że konto jest już zarejestrowane. " +
+                    "Jeżeli mimo tego nie możesz się zalogować, skontaktuj się z administratorem systemu.";
+            break;
+        case "IncorrectToken":
+            ViewData["Message"] = "Nieprawidłowy token zaproszenia.";
+            break;
+        default:
+            ViewData["Message"] = "Wystąpił nieznany błąd. Spróbuj ponownie.";
+            break;
+
+    }
+}
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-12">
+        <div class="col-sm-12 col-md-6 col-md-offset-3 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <p class="text-center">
+                @ViewData["Message"]
+            </p>
+        </div>
+    </div>
+</div>
