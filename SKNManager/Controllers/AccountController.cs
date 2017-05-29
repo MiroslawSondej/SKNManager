@@ -15,6 +15,9 @@ using SKNManager.Models.AccountViewModels;
 using SKNManager.Services;
 using SKNManager.Data;
 using Microsoft.AspNetCore.Builder;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SKNManager.Controllers
 {
@@ -22,16 +25,17 @@ namespace SKNManager.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly ApplicationDbContext _dbContext;
-        private readonly EmailTokenProvider<ApplicationUser> _tokenProvider;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             EmailTokenProvider<ApplicationUser> tokenProvider,
@@ -41,13 +45,13 @@ namespace SKNManager.Controllers
             ApplicationDbContext dbContext)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _dbContext = dbContext;
-            _tokenProvider = tokenProvider;
         }
 
         //
@@ -81,10 +85,10 @@ namespace SKNManager.Controllers
                     _logger.LogInformation(1, "Zalogowano.");
                     return RedirectToLocal(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
+                /*if (result.RequiresTwoFactor)
                 {
                     return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
+                }*/
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning(2, "Konto użytkownika zablokowane.");
@@ -112,7 +116,6 @@ namespace SKNManager.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        
         //
         // GET: /Account/ForgotPassword
         [HttpGet]
@@ -204,9 +207,22 @@ namespace SKNManager.Controllers
             return View();
         }
 
+        /*[HttpGet]                                         // FOR TEST ONLY
+        public async Task<IActionResult> AddRole()
+        {
+            var user = await _userManager.FindByEmailAsync("test@test.pl");
+            if (user == null)
+            {
+                return View("Error");
+            }
+            await _roleManager.CreateAsync(new IdentityRole("Administrator"));
+            await _userManager.AddToRoleAsync(user, "Administrator");
+            return null;
+        }*/
+
         //
         // GET: /Account/SendCode
-        [HttpGet]
+        /*[HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
         {
@@ -218,17 +234,11 @@ namespace SKNManager.Controllers
             var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        [AllowAnonymous]
-        public string Test()
-        {
-            return _tokenProvider.ToString();
-        }
+        }*/
 
         //
         // POST: /Account/SendCode
-        [HttpPost]
+        /*[HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendCode(SendCodeViewModel model)
@@ -262,11 +272,11 @@ namespace SKNManager.Controllers
             }
 
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        }
+        }*/
 
         //
         // GET: /Account/VerifyCode
-        [HttpGet]
+        /*[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
         {
@@ -277,11 +287,11 @@ namespace SKNManager.Controllers
                 return View("Error");
             }
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
+        }*/
 
         //
         // POST: /Account/VerifyCode
-        [HttpPost]
+        /*[HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
@@ -309,7 +319,7 @@ namespace SKNManager.Controllers
                 ModelState.AddModelError(string.Empty, "Kod nieprawidłowy.");
                 return View(model);
             }
-        }
+        }*/
 
         //
         // POST /Account/Invite
@@ -321,31 +331,43 @@ namespace SKNManager.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                // Create new user object
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email }; 
 
+                // Attempt to put user into database
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    // Send an email with this link
+                    // Generate "Email confirmation" token and URL
                     var codeKey = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action(nameof(Register), "Account", new { userId = user.Id, code = codeKey }, protocol: HttpContext.Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(model.Email, "Zaproszenie do systemu SKNManager | PWSZ Krosno",
-                        $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    // Get data of user who invites
+                    ApplicationUser inviter = await _userManager.GetUserAsync(HttpContext.User);
+                    
+                    // Prepare email message from file template
+                    #region Message
+                    string message = "";
+                    using (FileStream fileStream = new FileStream("EmailContents/InvitationEmail.cshtml", FileMode.Open)) {
+                        StreamReader reader = new StreamReader(fileStream);
+                        message = reader.ReadToEnd();
+                    }
+                    message = message.Replace("{Url}", callbackUrl);
+                    message = message.Replace("{UserName}", inviter.FirstName + " " + inviter.LastName);
+                    #endregion
 
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
+                    // Finally, send email
+                    await _emailSender.SendEmailAsync(model.Email, "Zaproszenie do systemu SKNManager - PWSZ Krosno", message);
                     return RedirectToLocal(returnUrl);
                 }
+
+                // We don't want to mess with Identity in Memeber/Add so we return errors as string's array
                 AddErrors(result);
+                ViewData["Message"] = "Następujące błędy wystąpiły podczas generowania zaproszenia:";
+                return View("AddInviteUserError");
             }
-
-            // If we got this far, something failed, redisplay form
-            return RedirectToLocal(returnUrl);
-
-            //_dbContext.Users.Where(u => u.Id == userId);
-            //_dbContext.Users.Add(newUser);
-            //_dbContext.SaveChanges();
+            // If we got this far, something failed
+            return RedirectToAction("Add", "Member");
         }
 
         // GET: /Account/Register
@@ -369,7 +391,7 @@ namespace SKNManager.Controllers
                 return View("RegistrationFailed");
             }
 
-            return View(new RegisterViewModel { Email = user.Email, UserId = userId, Code = code });
+            return View(new RegisterViewModel { Email = user.Email, UserId = userId, Code = code }); // Inject prefilled model to view
         }
 
         // POST: /Account/Register
@@ -380,7 +402,6 @@ namespace SKNManager.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 if (model.UserId == null || model.Code == null)
                 {
                     return View("Error");
@@ -392,12 +413,14 @@ namespace SKNManager.Controllers
                     return View("Error");
                 }
 
-                if (user.EmailConfirmed)
+                // Checking if account isn't already registered
+                if (user.EmailConfirmed) 
                 {
                     ViewData["ErrorID"] = "UserAlreadyActivated";
                     return View("RegistrationFailed");
                 }
 
+                // Verifying user token
                 bool tokenVerificationResult = await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultProvider, "EmailConfirmation", model.Code);
                 if(!tokenVerificationResult)
                 {
@@ -405,22 +428,27 @@ namespace SKNManager.Controllers
                     return View("RegistrationFailed");
                 }
 
+                // setting password
                 var result = await _userManager.AddPasswordAsync(user, model.Password);
-                if (result.Succeeded)
+                if (result.Succeeded) // Checking if password in accordance with password policy
                 {
-                    //result = await _userManager.ConfirmEmailAsync(user, model.Code);
                     user.EmailConfirmed = true;
-                    _dbContext.Users.Update(user);
-                    _dbContext.SaveChanges();
-                    _logger.LogInformation(3, "User created and activated.");
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+
+                    await _userManager.AddClaimAsync(user, new Claim("ClubRank", "Członek"));
+
+                    _dbContext.Users.Update(user); // Update db's context
+                    _dbContext.SaveChanges(); // Save changes to db
+                    _logger.LogInformation(3, "User created and activated."); 
                     return View("RegistrationCompleted");
                 }
-                else if(result.Errors.Where((e) => e.Code == "UserAlreadyHasPassword").Any())
+                else if(result.Errors.Where((e) => e.Code == "UserAlreadyHasPassword").Any()) // On "AddPassword" failure, check if user already have password
                 {
                     ViewData["ErrorID"] = "UserAlreadyActivated";
-                    return View("RegistrationFailed");
+                    return View("RegistrationFailed"); // If we got here, there was sth wrong with previous registration attempt
                 }
-                AddErrors(result);
+                AddErrors(result); // Add "AddPassword" errors descriptions to view (example: "Password must have at least 8 characters")
             }
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -455,7 +483,6 @@ namespace SKNManager.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
-
         #endregion
     }
 }

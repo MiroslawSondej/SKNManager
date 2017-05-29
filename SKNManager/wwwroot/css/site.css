@@ -90,6 +90,7 @@ ul, li {
     background-color: #ffffff;
     border-bottom: 2px solid #73738b;
     margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 .content-window .page-header {
     margin-top: 10px;

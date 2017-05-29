@@ -1,0 +1,18 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Dodaj członka";
+}
+
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-0 col-md-12">
+        <div class="col-sm-12 col-md-6 col-md-offset-3 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <p class="text-center">
+                @ViewData["Message"]
+                <div class="text-danger">@Html.ValidationSummary()</div>
+                <a href="@Url.Action("Add", "Member")" class="btn btn-default col-md-12">Powrót</a>
+            </p>
+        </div>
+    </div>
+</div>

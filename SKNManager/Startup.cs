@@ -46,10 +46,12 @@ namespace SKNManager
                 options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
 
 
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders().AddErrorDescriber<CustomIdentityErrorDescriber>();
+            // If you will ever attempting to change TokenProvider, don't forget to change it in "Account/Invite" too
+            services.AddIdentity<ApplicationUser, IdentityRole>(config => {
+                config.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
+            .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
             services.AddMvc();
 

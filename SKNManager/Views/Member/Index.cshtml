@@ -1,47 +1,48 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+@model IndexMemberViewModel
+@{
     ViewData["Title"] = "Zarządzanie członkami";
 }
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <div class="col-sm-12 col-md-12 content-window">
+        <span class="col-sm-12 col-md-12 content-window">
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
             <a class="btn btn-default pull-right" href="@Url.Action("Add", "Member")">Dodaj nowego członka</a>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <td>Imię i nazwisko</td>
+                        <td>Imię nazwisko (Email)</td>
                         <td>Rola</td>
                         <td>Zarządzanie</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    @foreach (Tuple<ApplicationUser, string> userTuple in Model.UserTuple)
+                    {
+                        if (!userTuple.Item1.EmailConfirmed)
+                        {
+                            @:<tr class="danger">
+                            @:<td>ZAPROSZONY
+                        }
+                        else
+                        {
+                            @:<tr>
+                            @:<td>
+                        }
+
+                        @userTuple.Item1.FirstName<text> </text>@userTuple.Item1.LastName <text> (</text>@userTuple.Item1.Email<text>)</text>  
+                        @:</td>
                         <td>
-                            Jan Kowalski
+                            @userTuple.Item2.ToString()
                         </td>
                         <td>
-                            Prezes
+                            <a href='@Url.Action("Details", "Member", new { id = @userTuple.Item1.Id })'>Szczegóły</a>
+                            <a href='@Url.Action("Edit", "Member", new { id = @userTuple.Item1.Id })'>Edytuj</a>
+                            <a href='@Url.Action("Delete", "Member", new { id = @userTuple.Item1.Id })'>Usuń</a>
                         </td>
-                        <td>
-                            <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
-                            <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
-                            <a href='@Url.Action("Delete", "Member")'>Usuń</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Jan Kowalski
-                        </td>
-                        <td>
-                            Prezes
-                        </td>
-                        <td>
-                            <a href='@Url.Action("Details", "Member")'>Szczegóły</a>
-                            <a href='@Url.Action("Edit", "Member")'>Edytuj</a>
-                            <a href='@Url.Action("Delete", "Member")'>Usuń</a>
-                        </td>
-                    </tr>
+                    @:</tr>
+                    }
                 </tbody>
             </table>
         </div>

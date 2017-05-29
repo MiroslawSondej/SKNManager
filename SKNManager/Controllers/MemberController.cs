@@ -1,32 +1,61 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using SKNManager.Models;
 using SKNManager.Models.MemberViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-using SKNManager.Models.AccountViewModels;
+using SKNManager.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SKNManager.Controllers
 {
     [Authorize]
     public class MemberController : Controller
     {
-        // GET: Member
-        public ActionResult Index()
+        private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILoggerFactory _loggerFactory;
+
+
+        public MemberController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, ILoggerFactory loggerFactory)
         {
-            return View();
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _loggerFactory = loggerFactory;
         }
 
+        // GET: Member
+        public async Task<ActionResult> Index()
+        {
+            List<Tuple<ApplicationUser, string>> userTuple = new List<Tuple<ApplicationUser, string>>();
 
+            var query = (from u in _dbContext.Users select u).ToArray<ApplicationUser>();
+            if (query != null)
+            {
+                foreach (ApplicationUser user in query)
+                {
+                    string userClubRole = "Brak";
 
+                    IList<Claim> claim = await _userManager.GetClaimsAsync(user);
+                    Claim[] userClaim = claim.Where(u => u.Type == "ClubRank").ToArray();
+                    
+                    if (userClaim != null && userClaim.Length > 0 && userClaim[0].Value.Length > 0)
+                        userClubRole = userClaim[0].Value;
+
+                    userTuple.Add(new Tuple<ApplicationUser, string>(user, userClubRole));
+                }
+            }
+            return View(new IndexMemberViewModel { UserTuple = userTuple.ToArray() });
+        }
 
         // GET: Member/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             return View();
         }
@@ -55,7 +84,7 @@ namespace SKNManager.Controllers
         }
 
         // GET: Member/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             return View();
         }
@@ -63,7 +92,7 @@ namespace SKNManager.Controllers
         // POST: Member/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(string id, IFormCollection collection)
         {
             try
             {
@@ -78,7 +107,7 @@ namespace SKNManager.Controllers
         }
 
         // GET: Member/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string  id)
         {
             return View();
         }
@@ -86,7 +115,7 @@ namespace SKNManager.Controllers
         // POST: Member/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(string id, IFormCollection collection)
         {
             try
             {
