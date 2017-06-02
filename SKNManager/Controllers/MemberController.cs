@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using SKNManager.Utils.Identity;
+
 namespace SKNManager.Controllers
 {
     [Authorize]
@@ -54,56 +56,95 @@ namespace SKNManager.Controllers
             return View(new IndexMemberViewModel { UserTuple = userTuple.ToArray() });
         }
 
-        // GET: Member/Details/5
-        public ActionResult Details(string id)
-        {
-            return View();
-        }
-
         // GET: Member/Add
         public ActionResult Add()
         {
             return View();
         }
 
-        // POST: Member/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        // GET: Member/Details/5
+        public async Task<ActionResult> Details(string id)
         {
-            try
+            if(id == null || id.Length <= 0)
             {
-                // TODO: Add insert logic here
+                return View("Error");
+            } 
 
-                return RedirectToAction("Index");
-            }
-            catch
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if(user == null)
             {
-                return View();
+                return View("Error");
             }
+
+
+            #region GetUserClubRank
+            string userClubRole = "Brak";
+
+            IList<Claim> claim = await _userManager.GetClaimsAsync(user);
+            Claim[] userClaim = claim.Where(u => u.Type == "ClubRank").ToArray();
+
+            if (userClaim != null && userClaim.Length > 0 && userClaim[0].Value.Length > 0)
+                userClubRole = userClaim[0].Value;
+            #endregion
+
+            return View(new DetailsViewModel() { User = user, ClubRankName = userClubRole });
         }
 
         // GET: Member/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return View("Error");
+
+            ViewBag.Id = id;
+            ViewBag.FirstName = user.FirstName;
+            ViewBag.LastName = user.LastName;
+            ViewBag.Email = user.Email;
+
+            #region GetUserClubRank
+            string userClubRole = "Brak";
+
+            IList<Claim> claim = await _userManager.GetClaimsAsync(user);
+            Claim[] userClaim = claim.Where(u => u.Type == "ClubRank").ToArray();
+
+            if (userClaim != null && userClaim.Length > 0 && userClaim[0].Value.Length > 0)
+                userClubRole = userClaim[0].Value;
+            #endregion
+
+            ViewBag.UserRank = userClubRole;
+            ViewBag.ClubRoles = ClubRolesFactory.GetAll();
+
+            return View(new EditMemberViewModel() { Id = user.Id });
         }
 
         // POST: Member/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, IFormCollection collection)
+        public async Task<ActionResult> Edit(string id, EditMemberViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                return View("Error");
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            // TODO: add security (user with lower rank cannot change user with higher rank)
+
+            string clubRankName = ClubRolesFactory.GetName(ClubRolesFactory.GetId(model.ClubRank)); // verify if rank from form is "real"
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+
+            #region GetUserClubRank
+
+            IList<Claim> claim = await _userManager.GetClaimsAsync(user);
+            Claim[] userClaim = claim.Where(u => u.Type == "ClubRank").ToArray();
+
+
+            if (userClaim != null && userClaim.Length > 0 && userClaim[0].Value.Length > 0)
+                await _userManager.ReplaceClaimAsync(user, userClaim[0], new Claim("ClubRank", clubRankName));
+            else
+                await _userManager.AddClaimAsync(user, new Claim("ClubRank", clubRankName));
+            #endregion
+            return RedirectToAction("Index");
         }
 
         // GET: Member/Delete/5

@@ -166,3 +166,10 @@ ul, li {
 .checkbox {
     padding-top: 0 !important;
 }
+.table-no-borders > tbody > tr > td {
+    border: none;
+}
+.form-control-inline {
+    display: inline-block;
+    width: auto;
+}
