@@ -57,12 +57,15 @@ namespace SKNManager.Controllers
         }
 
         // GET: Member/Add
+        [Authorize(Policy = "SecretaryClubRank")]
         public ActionResult Add()
         {
             return View();
         }
 
         // GET: Member/Details/5
+        [Authorize(Policy = "SecretaryClubRank")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Details(string id)
         {
             if(id == null || id.Length <= 0)
@@ -91,6 +94,7 @@ namespace SKNManager.Controllers
         }
 
         // GET: Member/Edit/5
+        [Authorize(Policy = "VicePresidentClubRank")]
         public async Task<ActionResult> Edit(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
@@ -121,6 +125,7 @@ namespace SKNManager.Controllers
         // POST: Member/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "VicePresidentClubRank")]
         public async Task<ActionResult> Edit(string id, EditMemberViewModel model)
         {
             if (!ModelState.IsValid)
@@ -148,6 +153,7 @@ namespace SKNManager.Controllers
         }
 
         // GET: Member/Delete/5
+        [Authorize(Policy = "VicePresidentClubRank")]
         public ActionResult Delete(string  id)
         {
             return View();
@@ -156,6 +162,7 @@ namespace SKNManager.Controllers
         // POST: Member/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "VicePresidentClubRank")]
         public ActionResult Delete(string id, IFormCollection collection)
         {
             try
