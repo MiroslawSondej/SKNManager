@@ -154,7 +154,7 @@ namespace SKNManager.Controllers
 
         // GET: Member/Delete/5
         [Authorize(Policy = "VicePresidentClubRank")]
-        public ActionResult Delete(string  id)
+        public ActionResult Delete(string id)
         {
             return View();
         }
@@ -163,11 +163,49 @@ namespace SKNManager.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "VicePresidentClubRank")]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
+            if(id == null || id.Length <= 0)
+            {
+                return View("Error");
+            }
+
             try
             {
-                // TODO: Add delete logic here
+                ApplicationUser user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return View("Error");
+                }
+
+                bool canDelete = false; // stores information, if there is any user able to add new users except the one, that will be delete (prevents situation, when there is no user able to add or invite a new one)
+                foreach(ApplicationUser u in _userManager.Users)
+                {
+                    if (u.Id == user.Id)
+                    {
+                        continue;
+                    }   
+                    else if(await _userManager.IsInRoleAsync(user, "Administrator"))
+                    {
+                        canDelete = true;
+                        break;
+                    }
+
+                    var claim = await _userManager.GetClaimsAsync(u);
+                    if (claim.Where(c => c.Type == "ClubRank" && c.Value == ClubRolesFactory.GetName(ClubRolesFactory.Role.PRESIDENT)).Count<Claim>() > 0)
+                    {
+                        canDelete = true;
+                        break;
+                    }
+                    
+                }
+                 
+                if(!canDelete)
+                {
+                    return View("Error");
+                }
+
+                await _userManager.DeleteAsync(user);
 
                 return RedirectToAction("Index");
             }
