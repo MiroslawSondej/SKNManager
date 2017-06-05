@@ -1,0 +1,47 @@
+﻿@model SKNManager.Models.EquipmentViewModels.Equipment
+
+@{
+    ViewData["Title"] = "Usuwanie";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+
+            <h3 class="ce">Czy na pewno chcesz usunąć @Html.DisplayFor(model => model.Name) ??</h3>
+            <div>
+                <br />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Amount)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EquipmentSet)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EquipmentSet.Name)
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Usuń" class="btn btn-default pull-right" />
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Index">Powrót</a>

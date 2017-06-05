@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Models;
+using SKNManager.Models.EquipmentViewModels;
 
 namespace SKNManager.Data
 {
@@ -14,6 +15,8 @@ namespace SKNManager.Data
             : base(options)
         {
         }
+        public DbSet<Equipment> Equipment { get; set; }
+        public DbSet<EquipmentSet> EquipmentSet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -26,6 +29,10 @@ namespace SKNManager.Data
             builder.Entity<IdentityUserLogin<string>>().ToTable("Identity_UserLogins");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("Identity_RoleClaims");
             builder.Entity<IdentityUserToken<string>>().ToTable("Identity_UserToken");
+            builder.Entity<Equipment>().ToTable("club_equipments");
+            builder.Entity<EquipmentSet>().ToTable("club_equipmentsets");
         }
+
+        
     }
 }
