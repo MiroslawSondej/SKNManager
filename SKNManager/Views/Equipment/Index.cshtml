@@ -11,10 +11,11 @@
         <a class="btn btn-default pull-right" href="@Url.Action("Create", "Equipment")">Dodaj nowy sprzęt</a>
         <a class="btn btn-default pull-right" href="@Url.Action("Index", "EquipmentSet")">Zestawy</a>
 
-        @*<form asp-action="Index" class="pull-left"> 
-            <p>Costam</p>  
-            <input />
-        </form>*@
+        <form asp-action="Index">
+            <input name="findEquipent" class="from-control" placeholder="Wpisz szukaną nazwe" />
+            <button type="submit" class="btn btn-primary">Szukaj</button>
+        </form>
+        <br/>
         <table class="table table-striped">
             <thead>
                 <tr>

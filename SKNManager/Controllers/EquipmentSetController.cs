@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Data;
 using SKNManager.Models.EquipmentViewModels;
+using SKNManager.Models.EquipmentSetViewModels;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SKNManager.Controllers
 {
+    [Authorize]
     public class EquipmentSetController : Controller
     {
         private readonly ApplicationDbContext _context;
+        //private readonly ILoggerFactory _loggerFactory;
 
-        public EquipmentSetController(ApplicationDbContext context)
+        public EquipmentSetController(ApplicationDbContext context, ILoggerFactory loggerFactory)
         {
-            _context = context;    
+            _context = context;
+            //_loggerFactory = loggerFactory;
         }
 
         // GET: EquipmentSet
@@ -25,22 +31,23 @@ namespace SKNManager.Controllers
             return View(await _context.EquipmentSet.ToListAsync());
         }
 
+
         // GET: EquipmentSet/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, Equipment equipment)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var equipmentSet = await _context.EquipmentSet
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var equipmentSet = await _context.EquipmentSet.SingleOrDefaultAsync(m => m.Id == id);
+            var eqSet = _context.Equipment.Where(e => e.EquipmentSetId == id).ToArray();
             if (equipmentSet == null)
             {
                 return NotFound();
             }
-
-            return View(equipmentSet);
+            
+            return View(new DetailsViewModel() { EquipmentSet = equipmentSet, Equipment = eqSet });
         }
 
         // GET: EquipmentSet/Create

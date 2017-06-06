@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Data;
 using SKNManager.Models.EquipmentViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SKNManager.Controllers
 {
+    [Authorize]
     public class EquipmentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,10 +22,17 @@ namespace SKNManager.Controllers
         }
 
         // GET: Equipment
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string findEquipent)
         {
-            var applicationDbContext = _context.Equipment.Include(e => e.EquipmentSet);
-            return View(await applicationDbContext.ToListAsync());
+            if (string.IsNullOrEmpty(findEquipent))
+            {
+                var applicationDbContext = _context.Equipment.Include(e => e.EquipmentSet).OrderBy(e => e.Name);
+                return View(await applicationDbContext.ToListAsync());
+            }else
+            {
+                var applicationDbContext = _context.Equipment.Include(e => e.EquipmentSet).Where(e => e.Name.Contains(findEquipent)).OrderBy(e => e.Name);
+                return View(await applicationDbContext.ToListAsync());
+            }
         }
 
         // GET: Equipment/Details/5
@@ -45,6 +54,7 @@ namespace SKNManager.Controllers
             return View(equipment);
         }
 
+        //[Authorize(Roles =)]
         // GET: Equipment/Create
         public IActionResult Create()
         {
