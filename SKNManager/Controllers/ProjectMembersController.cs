@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Data;
+using SKNManager.Models;
 
-namespace SKNManager.Models
+namespace SKNManager.Controllers
 {
     public class ProjectMembersController : Controller
     {
@@ -36,7 +37,7 @@ namespace SKNManager.Models
             var projectMembers = await _context.ProjectMembers
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.Project)
-                .SingleOrDefaultAsync(m => m.ProjectId == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (projectMembers == null)
             {
                 return NotFound();
@@ -58,7 +59,7 @@ namespace SKNManager.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,ProjectId")] ProjectMembers projectMembers)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ProjectId")] ProjectMembers projectMembers)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +80,7 @@ namespace SKNManager.Models
                 return NotFound();
             }
 
-            var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.ProjectId == id);
+            var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.Id == id);
             if (projectMembers == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace SKNManager.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,ProjectId")] ProjectMembers projectMembers)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProjectId")] ProjectMembers projectMembers)
         {
-            if (id != projectMembers.ProjectId)
+            if (id != projectMembers.Id)
             {
                 return NotFound();
             }
@@ -110,7 +111,7 @@ namespace SKNManager.Models
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectMembersExists(projectMembers.ProjectId))
+                    if (!ProjectMembersExists(projectMembers.Id))
                     {
                         return NotFound();
                     }
@@ -137,7 +138,7 @@ namespace SKNManager.Models
             var projectMembers = await _context.ProjectMembers
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.Project)
-                .SingleOrDefaultAsync(m => m.ProjectId == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (projectMembers == null)
             {
                 return NotFound();
@@ -151,7 +152,7 @@ namespace SKNManager.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.ProjectId == id);
+            var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.Id == id);
             _context.ProjectMembers.Remove(projectMembers);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -159,7 +160,7 @@ namespace SKNManager.Models
 
         private bool ProjectMembersExists(int id)
         {
-            return _context.ProjectMembers.Any(e => e.ProjectId == id);
+            return _context.ProjectMembers.Any(e => e.Id == id);
         }
     }
 }

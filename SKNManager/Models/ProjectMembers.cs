@@ -10,13 +10,14 @@ namespace SKNManager.Models
 {
     public class ProjectMembers
     {
-      
 
-       
+        [Key]
+        public int Id { get; set; }
+
         [Column("UserId")]
         public string UserId { get; set; }
 
-        [Key]
+        
         [Column("ProjectId")]
         public int ProjectId { get; set; }
 
