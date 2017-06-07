@@ -42,5 +42,8 @@
   <ItemGroup>
     <None Include="EmailContents\InvitationEmail.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\ProjectViewModels\" />
+  </ItemGroup>
 
 </Project>

@@ -15,6 +15,11 @@ namespace SKNManager.Data
         {
         }
 
+        public DbSet <Project> Project { get; set; }
+
+        public DbSet<ProjectMembers> ProjectMembers { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +31,10 @@ namespace SKNManager.Data
             builder.Entity<IdentityUserLogin<string>>().ToTable("Identity_UserLogins");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("Identity_RoleClaims");
             builder.Entity<IdentityUserToken<string>>().ToTable("Identity_UserToken");
+            builder.Entity<Project>().ToTable("club_projects");
+            builder.Entity<ProjectMembers>().ToTable("club_projectmembers");
         }
+       
+
     }
 }
