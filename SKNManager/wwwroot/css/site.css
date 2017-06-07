@@ -45,6 +45,18 @@ ul, li {
 .navbar-nav .user-menu {
     margin-left: 25px;
 }
+.user-menu-open {
+    background: none !important;
+    color: initial !important;
+}
+.user-menu-window {
+    margin-top: 15px;
+}
+.user-menu-window a:hover {
+    background-color: #959595;
+    color: #fff;
+    font-weight: 600;
+}
 /* ===[SIDEBAR]=== */
 .sidebar {
     display: none; /* Sidebar hidden on mobile devices */
@@ -172,4 +184,7 @@ ul, li {
 .form-control-inline {
     display: inline-block;
     width: auto;
+}
+li.borderless {
+    border: none;
 }

@@ -13,7 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/images\Thumbs.db" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\css\navmenu.css" />
+    <Content Include="wwwroot\images\user-icon.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="1.16.1" />
@@ -41,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EmailContents\InvitationEmail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Nowy folder\" />
   </ItemGroup>
 
 </Project>
