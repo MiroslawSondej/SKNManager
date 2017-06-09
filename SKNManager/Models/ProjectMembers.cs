@@ -15,10 +15,12 @@ namespace SKNManager.Models
         public int Id { get; set; }
 
         [Column("UserId")]
+        [Display(Name = "Użytkownik")]
         public string UserId { get; set; }
 
         
         [Column("ProjectId")]
+        [Display(Name = "Nazwa projektu")]
         public int ProjectId { get; set; }
 
         [ForeignKey("ProjectId")]

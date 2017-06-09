@@ -46,15 +46,22 @@ namespace SKNManager.Controllers
             return View(projectMembers);
         }
 
-        // GET: ProjectMembers/Create
-        public IActionResult Create()
+        // GET: ProjectMembers/Create/5
+        public IActionResult Create(int? id)
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name");
-            return View();
+            if (id != null)
+            {
+                ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", "LastName" );
+                //ViewData["ProjectName"] = var name = new _context.ProjectMembers.Include(p => p.ApplicationUser).Include(p => p.Project);
+                ViewData["ProjectId"] = id;
+                //ViewData["Id"] = id;
+                return View();
+            }
+            else
+                return NotFound();
         }
 
-        // POST: ProjectMembers/Create
+        // POST: ProjectMembers/Create/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -63,12 +70,13 @@ namespace SKNManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                projectMembers.Id = 0;
                 _context.Add(projectMembers);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Project", new { id = projectMembers.ProjectId });
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
+            //ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
             return View(projectMembers);
         }
 

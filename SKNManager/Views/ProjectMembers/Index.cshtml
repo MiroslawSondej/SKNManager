@@ -1,4 +1,4 @@
-@model IEnumerable<SKNManager.Models.ProjectMembers>
+﻿@model IEnumerable<SKNManager.Models.ProjectMembers>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,12 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
+                @*@Html.DisplayNameFor(model => model.ApplicationUser.UserName)*@
+                Użytkownik
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Project)
+                @*@Html.DisplayNameFor(model => model.Project)*@
+                Nazwa projektu
             </th>
             <th></th>
         </tr>
@@ -25,7 +27,8 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                @Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)
+                @Html.DisplayFor(modelItem => item.ApplicationUser.LastName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Project.Name)
