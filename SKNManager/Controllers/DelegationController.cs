@@ -97,5 +97,21 @@ namespace SKNManager.Controllers
                 return View("Error");
             }
         }
+
+        // GET: Delegation/Delete/5
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                Delegation delegation = _dbContext.Delegation.Where(d => d.Id == id).Include(d => d.Member).First();
+                _dbContext.Delegation.Remove(delegation);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View("Error");
+            }
+        }
     }
 }
