@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +64,25 @@ namespace SKNManager
             });
             services.AddSingleton<IAuthorizationHandler, MinimumClubRankHandler>();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                //F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
+                //L = F.Create("ModelBindingMessages", null);
+                options.ModelBindingMessageProvider.ValueIsInvalidAccessor =
+                    (x) => ("Wartość " + x + " jest nieprawidłowa");
+                options.ModelBindingMessageProvider.ValueMustBeANumberAccessor =
+                    (x) => ("Pole " + x + " musi być liczbą");
+                options.ModelBindingMessageProvider.MissingBindRequiredValueAccessor =
+                    (x) => ("Wartość dla pola \"" + x + "\" nie została podana.");
+                options.ModelBindingMessageProvider.AttemptedValueIsInvalidAccessor =
+                    (x, y) => ("Wartość " + x + " jest nieprawidłowa dla pola \"" + y + "\"");
+                options.ModelBindingMessageProvider.MissingKeyOrValueAccessor =
+                    () => ("Wartość jest wymagana");
+                options.ModelBindingMessageProvider.UnknownValueIsInvalidAccessor =
+                    (x) => ("Podana wartość jest nieprawidłowa dla " + x);
+                options.ModelBindingMessageProvider.ValueMustNotBeNullAccessor =
+                    (x) => ("Pole nie może pozostać puste");
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

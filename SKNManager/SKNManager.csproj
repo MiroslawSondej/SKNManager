@@ -48,6 +48,8 @@
     <None Include="EmailContents\InvitationEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Models\DelegationViewModels\" />
+    <Folder Include="Utils\Validation\" />
     <Folder Include="wwwroot\images\Nowy folder\" />
   </ItemGroup>
 
