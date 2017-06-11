@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SKNManager.Models.EquipmentViewModels.EquipmentSet>
+
+@{
+    ViewData["Title"] = "Zestawy";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <span class="col-sm-12 col-md-12 content-window" />
+        <h2 class="text-center page-header">@ViewData["Title"]</h2>
+        <a class="btn btn-default pull-right" href="@Url.Action("Create", "EquipmentSet")">Dodaj nowy zestaw</a>
+        <a class="btn btn-default pull-right" href="@Url.Action("Index", "Equipment")">Wyposażenie koła</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>Zarządzanie</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |                            
+                            <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

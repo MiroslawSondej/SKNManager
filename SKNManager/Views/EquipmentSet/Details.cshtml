@@ -1,0 +1,32 @@
+﻿@model EquipmentSetDetailsViewModel
+@using SKNManager.Models
+
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.EquipmentSet.Name);
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <dl class="dl-horizontal center">
+                <dt>
+                    Nazwa
+                </dt>
+                <dd>
+                    Ilość
+                </dd>
+                
+                @foreach (var m in Model.Equipment)
+                {
+                    <dt>@m.Name</dt>
+                    <dd>@m.Amount</dd>
+                }
+            </dl>            
+        </div>
+        <div>
+            <a asp-action="Index">Powrót</a> |
+            <a asp-action="Edit" asp-route-id="@Model.EquipmentSet.Id">Edytuj</a>   
+        </div>
+    </div>
+</div>

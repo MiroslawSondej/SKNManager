@@ -46,7 +46,7 @@ namespace SKNManager.Controllers
 
                     IList<Claim> claim = await _userManager.GetClaimsAsync(user);
                     Claim[] userClaim = claim.Where(u => u.Type == "ClubRank").ToArray();
-                    
+
                     if (userClaim != null && userClaim.Length > 0 && userClaim[0].Value.Length > 0)
                         userClubRole = userClaim[0].Value;
 
@@ -68,13 +68,13 @@ namespace SKNManager.Controllers
         //[Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Details(string id)
         {
-            if(id == null || id.Length <= 0)
+            if (id == null || id.Length <= 0)
             {
                 return View("Error");
-            } 
+            }
 
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            if(user == null)
+            if (user == null)
             {
                 return View("Error");
             }
@@ -154,9 +154,30 @@ namespace SKNManager.Controllers
 
         // GET: Member/Delete/5
         [Authorize(Policy = "VicePresidentClubRank")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            if (id == null || id.Length <= 0)
+            {
+                return View("Error");
+            }
+
+            try
+            {
+                ApplicationUser user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return View("Error");
+                }
+
+                ViewBag.FirstName = user.FirstName;
+                ViewBag.LastName = user.LastName;
+                ViewBag.Email = user.Email;
+
+                return View();
+            }
+            catch { }
+
+            return View("Error");
         }
 
         // POST: Member/Delete/5
@@ -165,7 +186,7 @@ namespace SKNManager.Controllers
         [Authorize(Policy = "VicePresidentClubRank")]
         public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
-            if(id == null || id.Length <= 0)
+            if (id == null || id.Length <= 0)
             {
                 return View("Error");
             }
@@ -179,13 +200,13 @@ namespace SKNManager.Controllers
                 }
 
                 bool canDelete = false; // stores information, if there is any user able to add new users except the one, that will be delete (prevents situation, when there is no user able to add or invite a new one)
-                foreach(ApplicationUser u in _userManager.Users)
+                foreach (ApplicationUser u in _userManager.Users)
                 {
                     if (u.Id == user.Id)
                     {
                         continue;
-                    }   
-                    else if(await _userManager.IsInRoleAsync(user, "Administrator"))
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "Administrator"))
                     {
                         canDelete = true;
                         break;
@@ -197,10 +218,10 @@ namespace SKNManager.Controllers
                         canDelete = true;
                         break;
                     }
-                    
+
                 }
-                 
-                if(!canDelete)
+
+                if (!canDelete)
                 {
                     return View("Error");
                 }
