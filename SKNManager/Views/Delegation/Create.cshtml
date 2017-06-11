@@ -1,0 +1,59 @@
+﻿@model SKNManager.Models.Delegation
+
+@{
+    ViewData["Title"] = "Dodaj wydarzenie";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <form asp-action="Create">
+                <div class="form-horizontal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="StartDate" class="form-control" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="EndDate" class="form-control" />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <select asp-for="CategoryId" class="form-control">
+                                @foreach(DelegationCategory item in ViewBag.Category)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div>
+                <a asp-action="Index">Powrót do listy</a>
+            </div>
+        </div>
+    </div>
+</div>

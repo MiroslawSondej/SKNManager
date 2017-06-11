@@ -12,6 +12,7 @@ namespace SKNManager.Models
         public int Id { get; set; }
 
         [Display(Name = "Nazwa")]
+        [Required(ErrorMessage = "Pole jest wymagane")]
         public string Name { get; set; }
     }
 }

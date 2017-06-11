@@ -24,6 +24,38 @@ namespace SKNManager.Controllers
             return View(delegation);
         }
 
+        // GET: Delegation/Create
+        public IActionResult Create()
+        {
+            try
+            {
+                ViewBag.Category = _dbContext.DelegationCategory.ToArray();
+                return View();
+            }
+            catch { }
+            return View("Error");
+        }
+
+        // POST: Delegation/Create
+        [HttpPost]
+        public IActionResult Create(Delegation model)
+        {
+            if(model == null || !ModelState.IsValid)
+            {
+                ViewBag.Category = _dbContext.DelegationCategory.ToArray();
+                return View();
+            }
+
+            try
+            {
+                _dbContext.Delegation.Add(new Delegation() { Name = model.Name, CategoryId = model.CategoryId, StartDate = model.StartDate, EndDate = model.EndDate });
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch { }
+            return View("Error");
+        }
+
         // GET: Delegation/Details/5
         public IActionResult Details(int id)
         {

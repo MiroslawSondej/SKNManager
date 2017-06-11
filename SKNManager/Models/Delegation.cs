@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using SKNManager.Utils.Validation;
+
 namespace SKNManager.Models
 {
     public class Delegation
@@ -24,6 +26,7 @@ namespace SKNManager.Models
         [DataType(DataType.Date, ErrorMessage = "Proszę wprowadzić poprawną datę (DD.MM.RRRR)")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Data zakończenia jest wymagana")]
+        [IsDateAfter("StartDate", ErrorMessage = "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia")]
         public DateTime EndDate { get; set; }
 
         [Required(ErrorMessage = "Kategoria jest wymagana")]
