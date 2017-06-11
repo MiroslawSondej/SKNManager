@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window">
+        <span class="col-sm-12 col-md-12 content-window"/>
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
             <form asp-action="Edit">
                 <div class="form-horizontal">
@@ -43,7 +43,12 @@
                     <div class="form-group">
                         <label asp-for="ProjectLeaderId" class="control-label col-md-2"></label>
                         <div class="col-md-10">
-                            <select asp-for="ProjectLeaderId" class="form-control" asp-items="ViewBag.ProjectLeaderId"></select>
+                            <select asp-for="ProjectLeaderId" class="form-control">
+                                @foreach (ApplicationUser item in ViewBag.ProjectLeader)
+                                {
+                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
+                                }
+                            </select>
                             <span asp-validation-for="ProjectLeaderId" class="text-danger"></span>
                         </div>
                     </div>

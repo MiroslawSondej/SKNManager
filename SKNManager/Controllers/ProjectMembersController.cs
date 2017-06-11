@@ -51,10 +51,10 @@ namespace SKNManager.Controllers
         {
             if (id != null)
             {
-                ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", "LastName" );
-                //ViewData["ProjectName"] = var name = new _context.ProjectMembers.Include(p => p.ApplicationUser).Include(p => p.Project);
+                ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName" );
+                ViewBag.UsersName = _context.Users.ToArray();
+                ViewBag.ProjectName = _context.Project;
                 ViewData["ProjectId"] = id;
-                //ViewData["Id"] = id;
                 return View();
             }
             else
@@ -68,72 +68,73 @@ namespace SKNManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,ProjectId")] ProjectMembers projectMembers)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !(_context.ProjectMembers.Any(d => d.ProjectId == projectMembers.ProjectId) && _context.ProjectMembers.Any(d => d.UserId.Equals(projectMembers.UserId))))
             {
                 projectMembers.Id = 0;
                 _context.Add(projectMembers);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Project", new { id = projectMembers.ProjectId });
             }
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
-            //ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
-            return View(projectMembers);
-        }
-
-        // GET: ProjectMembers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.Id == id);
-            if (projectMembers == null)
-            {
-                return NotFound();
-            }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
+            ViewData["ProjectId"] = projectMembers.ProjectId;
+            ViewBag.UsersName = _context.Users.ToArray();
             return View(projectMembers);
         }
 
-        // POST: ProjectMembers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProjectId")] ProjectMembers projectMembers)
-        {
-            if (id != projectMembers.Id)
-            {
-                return NotFound();
-            }
+        //// GET: ProjectMembers/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(projectMembers);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProjectMembersExists(projectMembers.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
-            return View(projectMembers);
-        }
+        //    var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.Id == id);
+        //    if (projectMembers == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
+        //    ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
+        //    return View(projectMembers);
+        //}
+
+        //// POST: ProjectMembers/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ProjectId")] ProjectMembers projectMembers)
+        //{
+        //    if (id != projectMembers.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(projectMembers);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ProjectMembersExists(projectMembers.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", projectMembers.UserId);
+        //    ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Name", projectMembers.ProjectId);
+        //    return View(projectMembers);
+        //}
 
         // GET: ProjectMembers/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -163,7 +164,7 @@ namespace SKNManager.Controllers
             var projectMembers = await _context.ProjectMembers.SingleOrDefaultAsync(m => m.Id == id);
             _context.ProjectMembers.Remove(projectMembers);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Project", new { id = projectMembers.ProjectId });
         }
 
         private bool ProjectMembersExists(int id)

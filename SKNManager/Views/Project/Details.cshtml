@@ -8,15 +8,9 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window">
+        <span class="col-sm-12 col-md-12 content-window" />
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            @*<dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+            <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Description)
                 </dt>
@@ -42,16 +36,26 @@
                     @Html.DisplayFor(model => model.ApplicationUser.FirstName)
                     @Html.DisplayFor(model => model.ApplicationUser.LastName)
                 </dd>
-            </dl>*@
-
-            @foreach(ProjectMembers user in Model.ProjectMembers)
-            {
-                <p>@user.ApplicationUser.FirstName</p>
-                <p>@user.ApplicationUser.LastName</p>
-
-            }
-
-            <a class="btn btn-default pull-right" href="@Url.Action("Create", "ProjectMembers", new {id = Model.Id })">Dodaj Członka</a>    
+            </dl>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td><strong>Członkowie projektu</strong></td>
+                    <td><a class="btn btn-default pull-right" href="@Url.Action("Create", "ProjectMembers", new {id = Model.Id })">Dodaj Członka</a></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ProjectMembers user in Model.ProjectMembers)
+                {
+                <tr>
+                    <td>@user.ApplicationUser.FirstName @user.ApplicationUser.LastName</td>
+                    <td><a href="@Url.Action("Delete", "ProjectMembers", new { id = user.Id } )">Usuń</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+                             
       </div>
 </div>
 

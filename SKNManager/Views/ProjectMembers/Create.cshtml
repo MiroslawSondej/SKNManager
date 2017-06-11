@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window">
+        <span class="col-sm-12 col-md-12 content-window"/>
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
 
             <form asp-action="Create">
@@ -15,21 +15,26 @@
                     <div class="form-group">
                         <label asp-for="UserId" class="col-md-2 control-label"></label>
                         <div class="col-md-10">
-                            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                            <select asp-for="UserId" class="form-control">
+                                @foreach (ApplicationUser item in ViewBag.UsersName)
+                                {
+                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
+                                }
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="ProjectId" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly />
+                        <div class="form-group">
+                            <label asp-for="ProjectId" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Dodaj" class="btn btn-default" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Dodaj" class="btn btn-default" />
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </div>

@@ -29,7 +29,7 @@ namespace SKNManager.Controllers
         // GET: Project/Details/5
         public IActionResult Details(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
@@ -51,6 +51,7 @@ namespace SKNManager.Controllers
         public IActionResult Create()
         {
             ViewData["ProjectLeaderId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewBag.ProjectLeader = _context.Users.ToArray();
             return View();
         }
 
@@ -68,6 +69,7 @@ namespace SKNManager.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["ProjectLeaderId"] = new SelectList(_context.Users, "Id", "Id", project.ProjectLeaderId);
+            ViewBag.ProjectLeader = _context.Users.ToArray();
             return View(project);
         }
 
@@ -80,6 +82,7 @@ namespace SKNManager.Controllers
             }
 
             var project = await _context.Project.SingleOrDefaultAsync(m => m.Id == id);
+            ViewBag.ProjectLeader = _context.Users.ToArray();
             if (project == null)
             {
                 return NotFound();
@@ -121,6 +124,7 @@ namespace SKNManager.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["ProjectLeaderId"] = new SelectList(_context.Users, "Id", "Id", project.ProjectLeaderId);
+            ViewBag.ProjectLeader = _context.Users.ToArray();
             return View(project);
         }
 
