@@ -27,16 +27,18 @@ namespace SKNManager.Controllers
         }
 
         // GET: Project/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Project
-                .Include(p => p.ApplicationUser)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            //var project = await _context.Project
+            //    .Include(p => p.ProjectMembers)
+            //    .SingleOrDefaultAsync(m => m.Id == id);
+
+            var project = _context.Project.Where(d => d.Id == id).Include(d => d.ApplicationUser).Include(d => d.ProjectMembers).ThenInclude(d => d.ApplicationUser).First();
             if (project == null)
             {
                 return NotFound();

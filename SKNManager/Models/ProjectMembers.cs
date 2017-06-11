@@ -16,15 +16,14 @@ namespace SKNManager.Models
 
         [Column("UserId")]
         [Display(Name = "Użytkownik")]
-        public string UserId { get; set; }
-
+        public string UserId { get; set; }        
         
+        [ForeignKey("ProjectId")]
+        public virtual Project Project { get; set; }
+
         [Column("ProjectId")]
         [Display(Name = "Nazwa projektu")]
         public int ProjectId { get; set; }
-
-        [ForeignKey("ProjectId")]
-        public virtual Project Project { get; set; }
 
         [ForeignKey("UserId")]
         public virtual ApplicationUser ApplicationUser { get; set; }

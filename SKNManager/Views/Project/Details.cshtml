@@ -10,7 +10,7 @@
     <div class="col-sm-12 col-md-12">
         <span class="col-sm-12 col-md-12 content-window">
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            <dl class="dl-horizontal">
+            @*<dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Name)
                 </dt>
@@ -42,7 +42,14 @@
                     @Html.DisplayFor(model => model.ApplicationUser.FirstName)
                     @Html.DisplayFor(model => model.ApplicationUser.LastName)
                 </dd>
-            </dl>
+            </dl>*@
+
+            @foreach(ProjectMembers user in Model.ProjectMembers)
+            {
+                <p>@user.ApplicationUser.FirstName</p>
+                <p>@user.ApplicationUser.LastName</p>
+
+            }
 
             <a class="btn btn-default pull-right" href="@Url.Action("Create", "ProjectMembers", new {id = Model.Id })">Dodaj Członka</a>    
       </div>

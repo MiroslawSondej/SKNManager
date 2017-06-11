@@ -35,5 +35,7 @@ namespace SKNManager.Models
         [ForeignKey("ProjectLeaderId")]
         [Display(Name="Opiekun projektu")]
         public virtual ApplicationUser ApplicationUser { get; set; }
+
+        public List<ProjectMembers> ProjectMembers;
     }
 }
