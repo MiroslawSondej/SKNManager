@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/images\icons\Thumbs.db" />
     <Content Remove="wwwroot/images\Thumbs.db" />
   </ItemGroup>
 
