@@ -38,7 +38,7 @@ namespace SKNManager.Controllers
             //    .Include(p => p.ProjectMembers)
             //    .SingleOrDefaultAsync(m => m.Id == id);
 
-            var project = _context.Project.Where(d => d.Id == id).Include(d => d.ApplicationUser).Include(d => d.ProjectMembers).ThenInclude(d => d.ApplicationUser).First();
+            var project = _context.Project.Where(d => d.Id == id).Include(p => p.ApplicationUser).Include(p => p.ProjectMembers).ThenInclude(p => p.ApplicationUser).First();
             if (project == null)
             {
                 return NotFound();

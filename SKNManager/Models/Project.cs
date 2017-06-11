@@ -36,6 +36,6 @@ namespace SKNManager.Models
         [Display(Name="Opiekun projektu")]
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        public List<ProjectMembers> ProjectMembers;
+        public List<ProjectMembers> ProjectMembers { get; set; }
     }
 }
