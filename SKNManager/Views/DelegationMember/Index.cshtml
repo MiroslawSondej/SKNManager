@@ -1,0 +1,62 @@
+﻿@model DelegationMemberIndexViewModel
+
+@{
+    ViewData["Title"] = "Uczestnicy wydarzenia";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <h3 class="text-center page-header">@Model.DelegationName</h3>
+            <table class="table">
+                <caption>Uczestniczyli:</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            Imię i nazwisko
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Member)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Delete", new { @delegationId = Model.DelegationId, @memberId = item.Id })">Usuń</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <table class="table">
+                <caption>Nie uczestniczyli:</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            Imię i nazwisko
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.User)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Add", new { @delegationId = Model.DelegationId, @userId = item.Id })">Dodaj</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

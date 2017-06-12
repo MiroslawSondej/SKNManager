@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService 
 @model IndexMemberViewModel
 @{
     ViewData["Title"] = "Zarządzanie członkami";
@@ -6,15 +7,21 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window">
+        <div class="col-sm-12 col-md-12 content-window">
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            <a class="btn btn-default pull-right" href="@Url.Action("Add", "Member")">Dodaj nowego członka</a>
+            @if (await AuthorizationService.AuthorizeAsync(User, "SecretaryClubRank"))
+            {
+                <a class="btn btn-default pull-right" href="@Url.Action("Add", "Member")">Dodaj nowego członka</a>
+            }
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <td>Imię nazwisko (Email)</td>
                         <td>Rola</td>
+                        @if (await AuthorizationService.AuthorizeAsync(User, "SecretaryClubRank"))
+                        {
                         <td>Zarządzanie</td>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -36,11 +43,17 @@
                         <td>
                             @userTuple.Item2.ToString()
                         </td>
-                        <td>
+                        @if (await AuthorizationService.AuthorizeAsync(User, "SecretaryClubRank"))
+                        {
+                        @:<td>
                             <a href='@Url.Action("Details", "Member", new { id = @userTuple.Item1.Id })'>Szczegóły</a>
-                            <a href='@Url.Action("Edit", "Member", new { id = @userTuple.Item1.Id })'>Edytuj</a>
-                            <a href='@Url.Action("Delete", "Member", new { id = @userTuple.Item1.Id })'>Usuń</a>
-                        </td>
+                            @if (await AuthorizationService.AuthorizeAsync(User, "VicePresidentClubRank"))
+                            {
+                                @:<a href='@Url.Action("Edit", "Member", new { id = @userTuple.Item1.Id })'>Edytuj</a>
+                                @:<a href='@Url.Action("Delete", "Member", new { id = @userTuple.Item1.Id })'>Usuń</a>
+                            }
+                        @:</td>
+                        }
                     @:</tr>
                     }
                 </tbody>

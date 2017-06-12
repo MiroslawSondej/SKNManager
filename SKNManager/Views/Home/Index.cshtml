@@ -1,12 +1,51 @@
-﻿@{
+﻿@model SKNManager.Models.HomeViewModels.IndexViewModel
+
+@{
     ViewData["Title"] = "Strona główna";
 }
+
 <div class="row">
+
     <div class="col-sm-12 col-md-12">
         <div class="col-sm-12 col-md-12 content-window">
             <h1 class="page-header">Strona główna</h1>
             <p>
-                Test
+                Witaj na stronie głównej systemu <b>SKNManager</b> - nowoczesnego narzędzia do zarządzania kołem naukowym.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h1 class="page-header">Informacje</h1>
+            <p>
+                <ul class="list-group">
+                    <li class="list-group-item borderless"><b>Nazwa koła:</b> @Model.ClubName</li>
+                    <li class="list-group-item borderless"><b>Liczba zarejestrowanych członków koła naukowego:</b> @Model.MembersCount</li>
+                    <li class="list-group-item borderless"><b>Przewodniczący koła:</b> @Model.President</li>
+                    <li class="list-group-item borderless"><b>Wiceprzewodniczący:</b> @Model.VicePresident</li>
+                    <li class="list-group-item borderless"><b>Sekretarz:</b> @Model.Secretary</li>
+                    <li class="list-group-item borderless"><b>Skarbnik:</b> @Model.Treasurer</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h1 class="page-header">Statystyki</h1>
+            <p>
+                <ul class="list-group">
+                    <li class="list-group-item borderless"><b>Łączna liczba projektów:</b> @Model.ProjectCount</li>
+                    <li class="list-group-item borderless"><b>Liczba projektów w realizacji:</b> @Model.ProjectInProgressCount</li>
+                    <li class="list-group-item borderless"><b>Liczba sztuk wyposażenia:</b> @Model.EquipmentCount</li>
+                    <li class="list-group-item borderless"><b>Ilość zestawów wyposażenia:</b> @Model.EquipmentSetsCount</li>
+                    <!--<li class="list-group-item borderless"><b>Aktualna ilość otwartych wypożyczeń:</b> @Model.EquipmentLoansInProgressCount</li>-->
+                    <li class="list-group-item borderless"><b>Najbliższe nadchodzace wydarzenie:</b> @Model.UpcomingEvent</li>
+                </ul>
             </p>
         </div>
     </div>

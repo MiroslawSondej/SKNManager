@@ -1,0 +1,33 @@
+﻿@using System.Collections.Generic
+
+@{
+    ViewData["Title"] = "Usuń członka";
+}
+<div class="row">
+    <div class="col-md-offset-2 col-sm-12 col-md-8">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <section>
+                <form asp-controller="Member" asp-action="Delete" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                    @Html.AntiForgeryToken()
+                    <div class="col-md-12">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <p class="form-control-static">Czy napewno chcesz usunąć użytkownika @ViewBag.FirstName @ViewBag.LastName <text>(</text>@ViewBag.Email<text>)?</text></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10">
+                            <button type="submit" class="btn btn-block">Potwierdź</button>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

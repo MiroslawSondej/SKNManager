@@ -29,6 +29,9 @@ ul, li {
     border: 0px;
     border-radius: 0;
 }
+.navbar-brand:hover {
+    color: #0084ff !important;
+}
 .navbar-nav {
     padding-top: 10px;
 }
@@ -44,6 +47,18 @@ ul, li {
 }
 .navbar-nav .user-menu {
     margin-left: 25px;
+}
+.user-menu-open {
+    background: none !important;
+    color: initial !important;
+}
+.user-menu-window {
+    margin-top: 15px;
+}
+.user-menu-window a:hover {
+    background-color: #959595;
+    color: #fff;
+    font-weight: 600;
 }
 /* ===[SIDEBAR]=== */
 .sidebar {
@@ -165,4 +180,14 @@ ul, li {
 }
 .checkbox {
     padding-top: 0 !important;
+}
+.table-no-borders > tbody > tr > td {
+    border: none;
+}
+.form-control-inline {
+    display: inline-block;
+    width: auto;
+}
+li.borderless {
+    border: none;
 }

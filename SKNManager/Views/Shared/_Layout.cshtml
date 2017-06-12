@@ -33,21 +33,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="">SKNManager</a>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">SKNManager</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <div class="nav navbar-nav navbar-right">
                     <div class="list-inline">
-                        <a class="list-inline-item" href="#">
-                            <img class="img-fluid user-nav-icon" src="images/icons/notification-icon.png" />
-                        </a>
-                        <a class="list-inline-item" href="#">
-                            <img class="img-fluid user-nav-icon" src="images/icons/message-icon.png" />
-                        </a>
-                        <a class="list-inline-item user-menu" href="#">
-                            <img class="img-fluid" src="images/icons/user-icon.png" />
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                        </a>
+                        <!--<a class="list-inline-item" href="#">
+                        <img class="img-fluid user-nav-icon" src="images/icons/notification-icon.png" />
+                    </a>
+                    <a class="list-inline-item" href="#">
+                        <img class="img-fluid user-nav-icon" src="images/icons/message-icon.png" />
+                    </a>-->
+                        <span class="dropdown">
+                            <a href="" class="list-inline-item user-menu-open dropdown-toggle" data-toggle="dropdown">
+                                <img class="img-fluid" src="~/images/icons/user-icon.png" />
+                                <span class="caret"></span>
+                            </a>
+                            <span class="dropdown-menu list-group user-menu-window">
+                                <a class="list-group-item" href="@Url.Action("Index", "Manage")">Profil</a>
+                                <a class="list-group-item" href="@Url.Action("Logout", "Account")">Wyloguj</a>
+                            </span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -55,10 +61,12 @@
         <div id="mobile-menu" class="collapse">
             <div id="menu-section" class="list-group">
                 @Html.Partial("_SharedMenuPartial")
-                <div class="mobile-menu-separator"></div>
+                <a class="list-group-item" href="@Url.Action("Index", "Manage")">Profil</a>
+                <a class="list-group-item" href="@Url.Action("Logout", "Account")">Wyloguj</a>
+                <!--<div class="mobile-menu-separator"></div>
                 <a class="list-group-item" href="">Profil użytkownika</a>
                 <a class="list-group-item" href="">Wiadomości</a>
-                <a class="list-group-item" href="">Powiadomienia</a>
+                <a class="list-group-item" href="">Powiadomienia</a>-->
             </div>
         </div>
     </nav>

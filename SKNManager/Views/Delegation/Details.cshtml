@@ -1,0 +1,86 @@
+﻿@model SKNManager.Models.Delegation
+
+@{
+    ViewData["Title"] = "Szczegóły wydarzenia";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt>
+                        Data
+                    </dt>
+                    <dd>
+                        @if (Model.StartDate == Model.EndDate)
+                        {
+                            @Html.DisplayFor(model => model.StartDate)
+                        }
+                        else
+                        {
+                            @: @Html.DisplayFor(model => model.StartDate)<text> - </text>@Html.DisplayFor(model => model.EndDate)
+                        }
+                    </dd>
+                    <dt>
+                        Kategoria
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Category.Name)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                <a class="btn btn-default" asp-action="Index">Powrót do listy</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">Uczestnicy wyjazdu</h2>
+            <div>
+                <a class="btn btn-default" asp-controller="DelegationMember" asp-action="Index" asp-route-id="@Model.Id">Dodaj uczestnika</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Imię i nazwisko
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DelegationMember user in Model.Member)
+                        {
+                            <tr>
+                                <td>
+                                    @user.User.FirstName @user.User.LastName
+                                </td>
+                                <td>
+                                    @user.User.Email
+                                </td>
+                                <td>
+                                    <a asp-controller="DelegationMember" asp-action="Delete" asp-route-id="@user.Id">Usuń</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

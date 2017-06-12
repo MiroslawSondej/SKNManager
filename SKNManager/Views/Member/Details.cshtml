@@ -1,0 +1,140 @@
+﻿@using System.Collections.Generic
+@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Informacje o członku koła";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                Dane osobowe
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-no-borders">
+                                    <tr>
+                                        <td>Imię:</td>
+                                        <td>@Model.User.FirstName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nazwisko:</td>
+                                        <td>@Model.User.LastName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>@Model.User.Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Numer telefonu:</td>
+                                        <td>@Model.User.PhoneNumber</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stanowisko:</td>
+                                        <td>@Model.ClubRankName</td>
+                                    </tr>
+                                </table>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                Delegacje
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-no-borders">
+                                    <tr>
+                                        <td>Nazwa:</td>
+                                        <td>Kategoria:</td>
+                                        <td>Data początkowa:</td>
+                                        <td>Data końcowa:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>......</td>
+                                        <td>______</td>
+                                        <td>......</td>
+                                        <td>______</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                Wypożyczenia
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-no-borders">
+                                    <tr>
+                                        <td>Nazwa sprzętu/zestawu:</td>
+                                        <td>Data wypożyczenia</td>
+                                        <td>Data zwrotu:</td>
+                                        <td>Uwagi:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>......</td>
+                                        <td>______</td>
+                                        <td>......</td>
+                                        <td>______</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                                Projekty
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-no-borders">
+                                    <tr>
+                                        <td>Nazwa projektu:</td>
+                                        <td>Data rozpoczęcia</td>
+                                        <td>Data zakończenia:</td>
+                                        <td>Opiekun</td>
+                                    </tr>
+                                    <tr>
+                                        <td>......</td>
+                                        <td>______</td>
+                                        <td>......</td>
+                                        <td>______</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

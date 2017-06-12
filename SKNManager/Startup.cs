@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +10,8 @@ using SKNManager.Data;
 using SKNManager.Models;
 using SKNManager.Services;
 using SKNManager.Utils.Identity;
+using SKNManager.Utils.Policy;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SKNManager
 {
@@ -53,7 +51,38 @@ namespace SKNManager
             .AddDefaultTokenProviders()
             .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
-            services.AddMvc();
+            // Add authorization rules
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SupervisorClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.SUPERVISOR)));
+                options.AddPolicy("PresidentClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.PRESIDENT)));
+                options.AddPolicy("VicePresidentClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.VICE_PRESIDENT)));
+                options.AddPolicy("SecretaryClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.SECRETARY)));
+                options.AddPolicy("TreasurerClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.TREASURER)));
+                options.AddPolicy("PhotographerClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.PHOTOGRAPHER)));
+                options.AddPolicy("MemberClubRank", policy => policy.Requirements.Add(new MinimumClubRankRequirement(ClubRolesFactory.Role.MEMBER)));
+            });
+            services.AddSingleton<IAuthorizationHandler, MinimumClubRankHandler>();
+
+            services.AddMvc(options =>
+            {
+                //F = services.BuildServiceProvider().GetService<IStringLocalizerFactory>();
+                //L = F.Create("ModelBindingMessages", null);
+                options.ModelBindingMessageProvider.ValueIsInvalidAccessor =
+                    (x) => ("Wartość " + x + " jest nieprawidłowa");
+                options.ModelBindingMessageProvider.ValueMustBeANumberAccessor =
+                    (x) => ("Pole " + x + " musi być liczbą");
+                options.ModelBindingMessageProvider.MissingBindRequiredValueAccessor =
+                    (x) => ("Wartość dla pola \"" + x + "\" nie została podana.");
+                options.ModelBindingMessageProvider.AttemptedValueIsInvalidAccessor =
+                    (x, y) => ("Wartość " + x + " jest nieprawidłowa dla pola \"" + y + "\"");
+                options.ModelBindingMessageProvider.MissingKeyOrValueAccessor =
+                    () => ("Wartość jest wymagana");
+                options.ModelBindingMessageProvider.UnknownValueIsInvalidAccessor =
+                    (x) => ("Podana wartość jest nieprawidłowa dla " + x);
+                options.ModelBindingMessageProvider.ValueMustNotBeNullAccessor =
+                    (x) => ("Pole nie może pozostać puste");
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

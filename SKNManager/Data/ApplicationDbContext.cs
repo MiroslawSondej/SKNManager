@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Models;
+using SKNManager.Models.EquipmentViewModels;
 
 namespace SKNManager.Data
 {
@@ -14,9 +15,14 @@ namespace SKNManager.Data
             : base(options)
         {
         }
+        public DbSet<Equipment> Equipment { get; set; }
+        public DbSet<EquipmentSet> EquipmentSet { get; set; }
 
-        public DbSet <Project> Project { get; set; }
+        public DbSet<Delegation> Delegation { get; set; }
+        public DbSet<DelegationCategory> DelegationCategory { get; set; }
+        public DbSet<DelegationMember> DelegationMember { get; set; }
 
+        public DbSet<Project> Project { get; set; }
         public DbSet<ProjectMembers> ProjectMembers { get; set; }
 
 
@@ -33,8 +39,13 @@ namespace SKNManager.Data
             builder.Entity<IdentityUserToken<string>>().ToTable("Identity_UserToken");
             builder.Entity<Project>().ToTable("club_projects");
             builder.Entity<ProjectMembers>().ToTable("club_projectmembers");
-        }
-       
 
+            builder.Entity<Delegation>().ToTable("Club_Delegations");
+            builder.Entity<DelegationCategory>().ToTable("Club_DelegationCategories");
+            builder.Entity<DelegationMember>().ToTable("Club_DelegationMembers");
+
+            builder.Entity<Equipment>().ToTable("club_equipments");
+            builder.Entity<EquipmentSet>().ToTable("club_equipmentsets");
+        }
     }
 }
