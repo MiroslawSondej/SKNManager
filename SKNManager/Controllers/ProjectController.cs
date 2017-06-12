@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SKNManager.Data;
 using SKNManager.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SKNManager.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,17 +33,13 @@ namespace SKNManager.Controllers
         {
             if (id == null || id == 0)
             {
-                return NotFound();
+                return View("Error");
             }
-
-            //var project = await _context.Project
-            //    .Include(p => p.ProjectMembers)
-            //    .SingleOrDefaultAsync(m => m.Id == id);
 
             var project = _context.Project.Where(d => d.Id == id).Include(p => p.ApplicationUser).Include(p => p.ProjectMembers).ThenInclude(p => p.ApplicationUser).First();
             if (project == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(project);
@@ -78,14 +76,14 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var project = await _context.Project.SingleOrDefaultAsync(m => m.Id == id);
             ViewBag.ProjectLeader = _context.Users.ToArray();
             if (project == null)
             {
-                return NotFound();
+                return View("Error");
             }
             ViewData["ProjectLeaderId"] = new SelectList(_context.Users, "Id", "Id", project.ProjectLeaderId);
             return View(project);
@@ -100,7 +98,7 @@ namespace SKNManager.Controllers
         {
             if (id != project.Id)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
@@ -114,7 +112,7 @@ namespace SKNManager.Controllers
                 {
                     if (!ProjectExists(project.Id))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -133,7 +131,7 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var project = await _context.Project
@@ -141,7 +139,7 @@ namespace SKNManager.Controllers
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (project == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(project);

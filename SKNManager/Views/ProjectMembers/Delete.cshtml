@@ -6,9 +6,9 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window">
+        <span class="col-sm-12 col-md-12 content-window"/>
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            <h3>Czy chcesz usunąć z zespoł @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName</h3>
+            <h3>Czy chcesz usunąć z zespołu @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName</h3>
             <div>
                 <dl class="dl-horizontal">
                     <input type="hidden" asp-for="Id" />
@@ -35,5 +35,5 @@
             </div>
     </div>
 </div>
-<a asp-action="Index">Powrót</a>
+<a class="" href="@Url.Action("Details", "Project", new {id = Model.ProjectId})">Powrót</a>
     

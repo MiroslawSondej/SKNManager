@@ -26,12 +26,21 @@
                         <div class="form-group">
                             <label asp-for="ProjectId" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
-                                <input asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly/>
+                                <p>@ViewBag.ProjectName</p>
+                                <input style="display:none" asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly/>
                             </div>
                         </div>
+                   
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
                                 <input type="submit" value="Dodaj" class="btn btn-default" />
+                                @if (ViewBag.UsersExist != 0)
+                                {
+                                    <br />
+                                    <br />
+                                    <span class="text-danger"> Już jest przypisany do projektu </span>
+
+                                }
                             </div>
                         </div>
                     </div>
