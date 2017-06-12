@@ -1,0 +1,47 @@
+﻿@model SKNManager.Models.ManageViewModels.VerifyChangeEmailViewModel
+
+@{
+    ViewData["Title"] = "Zmiana adresu email";
+    Layout = "~/Views/Shared/_LoginPageLayout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 content-window">
+            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+            <form asp-action="VerifyEmailChange">
+                <div class="form-horizontal">
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    @Html.HiddenFor(h => h.UserId, ViewData["UserId"])
+                    <input asp-for="Email" type="hidden" value="@ViewData["NewEmail"]" />
+                    @Html.HiddenFor(h => h.Code, ViewData["Code"])
+
+                    <div class="form-group">
+                        <label asp-for="ConfirmEmail" class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="ConfirmEmail" class="form-control" type="email" />
+                            <span asp-validation-for="ConfirmEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label col-md-2"></label>
+                        <div class="col-md-10">
+                            <input asp-for="Password" class="form-control" type="password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Zmień" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -29,6 +29,9 @@ ul, li {
     border: 0px;
     border-radius: 0;
 }
+.navbar-brand:hover {
+    color: #0084ff !important;
+}
 .navbar-nav {
     padding-top: 10px;
 }
