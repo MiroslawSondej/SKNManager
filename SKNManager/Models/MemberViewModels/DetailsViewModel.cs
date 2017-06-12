@@ -9,8 +9,8 @@ namespace SKNManager.Models.MemberViewModels
     {
         public ApplicationUser User { get; set; }
         public string ClubRankName { get; set; }
-        // public Delegation[] Delegation { get; set; }
+         public Delegation[] Delegation { get; set; }
         // public EquipmentLoan[] Loan { get; set; } 
-        // public Project[] Project { get; set; }        
+         public Project[] Project { get; set; }        
     }
 }

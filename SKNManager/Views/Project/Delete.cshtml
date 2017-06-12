@@ -6,51 +6,51 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window"/>
-            <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            <h3>Czy chcesz usunąć @Model.Name</h3>
-            <div>
-                <dl class="dl-horizontal">
-                    <input type="hidden" asp-for="Id" />
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Name)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.StartDate)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.StartDate)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.EndDate)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.ApplicationUser)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.ApplicationUser.Id)
-                    </dd>
-                </dl>
+        <span class="col-sm-12 col-md-12 content-window" />
+        <h2 class="text-center page-header">@ViewData["Title"]</h2>
+        <h3>Czy chcesz usunąć @Model.Name</h3>
+        <div>
+            <dl class="dl-horizontal">
+                <input type="hidden" asp-for="Id" />
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EndDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.Id)
+                </dd>
+            </dl>
 
-                <form asp-action="Delete">
-                    <div class="form-actions no-color">
-                        <input type="submit" value="Usuń" class="btn btn-default pull-right" />                        
-                    </div>
-                </form>
-            </div>
-        </div>    
+            <form asp-action="Delete">
+                <div class="form-actions no-color">
+                    <input type="submit" value="Usuń" class="btn btn-default pull-right" />
+                    <a class="btn btn-default" asp-action="Index">Powrót</a>
+                </div>
+            </form>
+        </div>
     </div>
-<a asp-action="Index">Powrót</a>
+</div>
 

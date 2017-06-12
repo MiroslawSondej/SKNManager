@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using SKNManager.Utils.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace SKNManager.Controllers
 {
@@ -90,7 +91,20 @@ namespace SKNManager.Controllers
                 userClubRole = userClaim[0].Value;
             #endregion
 
-            return View(new DetailsViewModel() { User = user, ClubRankName = userClubRole });
+            var delegations = new Delegation[] { };
+            try
+            {
+                delegations = _dbContext.Delegation.Include(d => d.Category).Include(d => d.Member).ThenInclude(d => d.User).Where(d => d.Member.Any(m => m.User.Id == id)).ToArray();
+            } catch { }
+
+            var projects = new Project[] { };
+            try
+            {
+                projects = _dbContext.Project.Include(p => p.ProjectMembers).ThenInclude(d => d.ApplicationUser).Where(d => d.ProjectMembers.Any(m => m.ApplicationUser.Id == id) || d.ApplicationUser.Id == id).ToArray();
+            }
+            catch { }
+
+            return View(new DetailsViewModel() { User = user, ClubRankName = userClubRole, Delegation = delegations, Project = projects });
         }
 
         // GET: Member/Edit/5

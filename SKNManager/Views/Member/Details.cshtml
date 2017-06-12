@@ -65,18 +65,21 @@
                                         <td>Data początkowa:</td>
                                         <td>Data końcowa:</td>
                                     </tr>
-                                    <tr>
-                                        <td>......</td>
-                                        <td>______</td>
-                                        <td>......</td>
-                                        <td>______</td>
-                                    </tr>
+                                    @foreach (Delegation item in Model.Delegation)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.Category.Name</td>
+                                            <td>@item.StartDate.ToString("dd-MM-yyyy")</td>
+                                            <td>@item.EndDate.ToString("dd-MM-yyyy")</td>
+                                        </tr>
+                                    }
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <!--<div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
@@ -104,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -123,17 +126,23 @@
                                         <td>Data zakończenia:</td>
                                         <td>Opiekun</td>
                                     </tr>
-                                    <tr>
-                                        <td>......</td>
-                                        <td>______</td>
-                                        <td>......</td>
-                                        <td>______</td>
-                                    </tr>
+                                    @foreach (Project item in Model.Project)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td>@item.StartDate.Value.ToString("dd-MM-yyyy")</td>
+                                            <td>@item.StartDate.Value.ToString("dd-MM-yyyy")</td>
+                                            <td>@item.ApplicationUser.FirstName @item.ApplicationUser.LastName</td>
+                                        </tr>
+                                    }
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-offset-5 col-md-2 col-sm-offset-1 col-sm-10">
+                <a class="btn btn-block" asp-action="Index">Powrót</a>
             </div>
         </div>
     </div>

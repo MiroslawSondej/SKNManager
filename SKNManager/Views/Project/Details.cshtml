@@ -55,11 +55,7 @@
                 }
             </tbody>
         </table>
-                             
+        <a class="btn btn-default" asp-action="Index">Powrót</a>  
+        <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
       </div>
 </div>
-
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a> |
-        <a asp-action="Index">Powrót</a>
-    </div>

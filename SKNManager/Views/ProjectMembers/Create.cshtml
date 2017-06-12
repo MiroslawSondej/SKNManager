@@ -6,52 +6,50 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window"/>
-            <h2 class="text-center page-header">@ViewData["Title"]</h2>
+        <span class="col-sm-12 col-md-12 content-window" />
+        <h2 class="text-center page-header">@ViewData["Title"]</h2>
 
-            <form asp-action="Create">
-                <div class="form-horizontal">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="UserId" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <select asp-for="UserId" class="form-control">
-                                @foreach (ApplicationUser item in ViewBag.UsersName)
-                                {
-                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
-                                }
-                            </select>
-                        </div>
+        <form asp-action="Create">
+            <div class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserId" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="UserId" class="form-control">
+                            @foreach (ApplicationUser item in ViewBag.UsersName)
+                            {
+                                <option value="@item.Id">@item.FirstName @item.LastName</option>
+                            }
+                        </select>
                     </div>
-                        <div class="form-group">
-                            <label asp-for="ProjectId" class="col-md-2 control-label"></label>
-                            <div class="col-md-10">
-                                <p>@ViewBag.ProjectName</p>
-                                <input style="display:none" asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly/>
-                            </div>
-                        </div>
-                   
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Dodaj" class="btn btn-default" />
-                                @if (ViewBag.UsersExist != 0)
-                                {
-                                    <br />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProjectId" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <p>@ViewBag.ProjectName</p>
+                        <input style="display:none" asp-for="ProjectId" class="form-control" value="@ViewBag.ProjectId" type="text" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Dodaj" class="btn btn-default" />
+                        <a class="btn btn-default" href="@Url.Action("Details", "Project", new {id = ViewBag.ProjectId})">Powrót</a>
+                        @if (ViewBag.UsersExist != 0)
+                        {
+                            <br />
                                     <br />
                                     <span class="text-danger"> Już jest przypisany do projektu </span>
 
-                                }
-                            </div>
-                        </div>
+                        }
                     </div>
-            </form>
-        </div>
-    </div>
-
-            <div>
-                <a class="" href="@Url.Action("Details", "Project", new {id = ViewBag.ProjectId})">Powrót</a>
+                </div>
             </div>
+        </form>
+    </div>
+</div>
 
-            @section Scripts {
-                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-            }
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

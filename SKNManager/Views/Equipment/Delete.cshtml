@@ -9,7 +9,7 @@
         <div class="col-sm-12 col-md-12 content-window">
             <h2 class="text-center page-header">@ViewData["Title"]</h2>
 
-            <h3 class="ce">Czy na pewno chcesz usunąć @Html.DisplayFor(model => model.Name)?</h3>
+            <h3 class="text-center">Czy na pewno chcesz usunąć @Html.DisplayFor(model => model.Name)?</h3>
             <div>
                 <br />
                 <dl class="dl-horizontal">
@@ -33,15 +33,13 @@
                     </dd>
                 </dl>
 
-                <form asp-action="Delete">
+                <form asp-action="Delete" class=" col-md-offset-5">
                     <div class="form-actions no-color">
-                        <input type="submit" value="Usuń" class="btn btn-default pull-right" />
-                        
+                        <input type="submit" value="Usuń" class="btn btn-default" /> 
+                        <a class="btn btn-default" asp-action="Index">Powrót</a> 
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<a asp-action="Index">Powrót</a>

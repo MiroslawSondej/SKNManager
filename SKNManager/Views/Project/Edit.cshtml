@@ -6,66 +6,63 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12">
-        <span class="col-sm-12 col-md-12 content-window"/>
-            <h2 class="text-center page-header">@ViewData["Title"]</h2>
-            <form asp-action="Edit">
-                <div class="form-horizontal">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id" />
-                    <div class="form-group">
-                        <label asp-for="Name" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Description" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <textarea class="form-control" name="Description" rows="4" cols="50"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="StartDate" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="StartDate" class="form-control" type="date"/>
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="EndDate" class="col-md-2 control-label"></label>
-                        <div class="col-md-10">
-                            <input asp-for="EndDate" class="form-control" type="date" />
-                            <span asp-validation-for="EndDate" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ProjectLeaderId" class="control-label col-md-2"></label>
-                        <div class="col-md-10">
-                            <select asp-for="ProjectLeaderId" class="form-control">
-                                @foreach (ApplicationUser item in ViewBag.ProjectLeader)
-                                {
-                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
-                                }
-                            </select>
-                            <span asp-validation-for="ProjectLeaderId" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Zapisz" class="btn btn-default" />
-                        </div>
+        <span class="col-sm-12 col-md-12 content-window" />
+        <h2 class="text-center page-header">@ViewData["Title"]</h2>
+        <form asp-action="Edit">
+            <div class="form-horizontal">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-
-            <div>
-                <a asp-action="Index">Powrót</a>
+                <div class="form-group">
+                    <label asp-for="Description" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <textarea class="form-control" name="Description" rows="4" cols="50"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="StartDate" class="form-control" type="date" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndDate" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <input asp-for="EndDate" class="form-control" type="date" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProjectLeaderId" class="control-label col-md-2"></label>
+                    <div class="col-md-10">
+                        <select asp-for="ProjectLeaderId" class="form-control">
+                            @foreach (ApplicationUser item in ViewBag.ProjectLeader)
+                            {
+                                <option value="@item.Id">@item.FirstName @item.LastName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProjectLeaderId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Zapisz" class="btn btn-default" />
+                        <a class="btn btn-default" asp-action="Index">Powrót</a>
+                    </div>
+                </div>
             </div>
+        </form>
+    </div>
+</div>
 
-            @section Scripts {
-                @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-            }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
