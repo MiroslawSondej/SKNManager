@@ -37,14 +37,14 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var equipmentSet = await _context.EquipmentSet.SingleOrDefaultAsync(m => m.Id == id);
             var eqSet = _context.Equipment.Where(e => e.EquipmentSetId == id).ToArray();
             if (equipmentSet == null)
             {
-                return NotFound();
+                return View("Error");
             }
             
             return View(new DetailsViewModel() { EquipmentSet = equipmentSet, Equipment = eqSet });
@@ -77,13 +77,13 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var equipmentSet = await _context.EquipmentSet.SingleOrDefaultAsync(m => m.Id == id);
             if (equipmentSet == null)
             {
-                return NotFound();
+                return View("Error");
             }
             return View(equipmentSet);
         }
@@ -97,7 +97,7 @@ namespace SKNManager.Controllers
         {
             if (id != equipmentSet.Id)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
@@ -111,7 +111,7 @@ namespace SKNManager.Controllers
                 {
                     if (!EquipmentSetExists(equipmentSet.Id))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -128,14 +128,14 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var equipmentSet = await _context.EquipmentSet
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (equipmentSet == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(equipmentSet);
