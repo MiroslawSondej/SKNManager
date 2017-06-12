@@ -40,7 +40,7 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var equipment = await _context.Equipment
@@ -48,7 +48,7 @@ namespace SKNManager.Controllers
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (equipment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(equipment);
@@ -84,13 +84,13 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+               return View("Error");
             }
 
             var equipment = await _context.Equipment.SingleOrDefaultAsync(m => m.Id == id);
             if (equipment == null)
             {
-                return NotFound();
+                return View("Error");
             }
             ViewData["EquipmentSetId"] = new SelectList(_context.EquipmentSet, "Id", "Name", equipment.EquipmentSetId);
             return View(equipment);
@@ -105,7 +105,7 @@ namespace SKNManager.Controllers
         {
             if (id != equipment.Id)
             {
-                return NotFound();
+                return View("Error");
             }
 
             if (ModelState.IsValid)
@@ -119,7 +119,7 @@ namespace SKNManager.Controllers
                 {
                     if (!EquipmentExists(equipment.Id))
                     {
-                        return NotFound();
+                        return View("Error");
                     }
                     else
                     {
@@ -137,7 +137,7 @@ namespace SKNManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             var equipment = await _context.Equipment
@@ -145,7 +145,7 @@ namespace SKNManager.Controllers
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (equipment == null)
             {
-                return NotFound();
+                return View("Error");
             }
 
             return View(equipment);
