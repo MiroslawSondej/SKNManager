@@ -1,0 +1,60 @@
+@model SKNManager.Models.EquipmentLoans
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EquipmentLoans</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LoanDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReturnDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReturnDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Equipment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Equipment.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EquipmentSet)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EquipmentSet.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

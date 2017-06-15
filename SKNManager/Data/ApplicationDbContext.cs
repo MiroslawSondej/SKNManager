@@ -17,6 +17,7 @@ namespace SKNManager.Data
         }
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<EquipmentSet> EquipmentSet { get; set; }
+        public DbSet<EquipmentLoans> EquipmentLoans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,8 +32,7 @@ namespace SKNManager.Data
             builder.Entity<IdentityUserToken<string>>().ToTable("Identity_UserToken");
             builder.Entity<Equipment>().ToTable("club_equipments");
             builder.Entity<EquipmentSet>().ToTable("club_equipmentsets");
-        }
-
-        
+            builder.Entity<EquipmentLoans>().ToTable("club_equipmentloans");
+        }        
     }
 }

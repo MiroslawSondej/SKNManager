@@ -71,6 +71,7 @@ namespace SKNManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                equipment.AvailableAmount = equipment.Amount;
                 _context.Add(equipment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

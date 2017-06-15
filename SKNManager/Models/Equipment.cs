@@ -21,6 +21,9 @@ namespace SKNManager.Models.EquipmentViewModels
         [Display(Name = "Ilosc")]
         public int Amount { get; set ; }
 
+        [Display(Name = "Dostepna ilosc")]
+        public int AvailableAmount { get; set; }
+
         [Display(Name = "Zestaw")]
         public Nullable<int> EquipmentSetId { get; set; }
 

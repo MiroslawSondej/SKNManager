@@ -17,12 +17,11 @@ namespace SKNManager.Controllers
     public class EquipmentSetController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //private readonly ILoggerFactory _loggerFactory;
 
-        public EquipmentSetController(ApplicationDbContext context, ILoggerFactory loggerFactory)
+        public EquipmentSetController(ApplicationDbContext context)
         {
             _context = context;
-            //_loggerFactory = loggerFactory;
+           
         }
 
         // GET: EquipmentSet
